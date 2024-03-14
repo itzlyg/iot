@@ -7,8 +7,6 @@
 ##  简介
 本项目是一个物联网基础平台，可以快速实现硬件设备接入。
 
-![架构图](/.image/common/ruoyi-vue-pro-architecture.png) 
-
 * Java 后端：`master` 分支为 JDK 8 + Spring Boot 2.7.18
 * 管理后台的电脑端：Vue2 提供 `element-ui` 版本
 * 后端采用 Spring Boot 多模块架构、MySQL + MyBatis Plus、Redis + Redisson，Vert.x
@@ -67,4 +65,4 @@
 `18812345678` `Io@t0315Jb!`
 
 **如有疑问或者需要源码的可以随时联系：**
-<img src="https://www.sinozg.cn/resources/jb_qrcode.jpg" width="150" heigth="150"/>
+<img src="./iot-ap/doc/jb_qrcode.jpg" width="120" heigth="80"/>
