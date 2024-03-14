@@ -1,4 +1,3 @@
-# iot 物联网平台
 <p align="center">
  <img src="https://img.shields.io/badge/Spring%20Boot-2.7.18-blue.svg" alt="Downloads">
  <img src="https://img.shields.io/badge/Vue-2.6.14-blue.svg" alt="Downloads">
@@ -26,20 +25,24 @@
 
 
 #### 物联网项目 模块组成
+
 ##### protocol 协议层代码
 - 1、base 协议基础抽取
 - 2、service 实现协议组件，实现整个通讯通道、编解码，完成数据的流转。提供方法给业务层调用
 - 3、tcp、http、ws、mqtt是具体协议的实现包
+
 ##### module 抽象出可以多实现方式的组件
 - 1、oss 文件存储
 - 2、notify 告警通知
 - 3、sink 物模型数据落地到数据库
+
 ##### achieve 用来实现 module组件的
 - 1、mq-vertx 用vert.x 来实现消息队列
 - 2、rocket-mq rocketMq的实现
 - 3、oss-qn 七牛实现存储方案
 - 4、sink-td TDengine 对设备上报下发数据记录、设备的属性等数据量很大的场景
 - 5、sink-mysql mysql 的方式实现数据落地
+
 ##### biz 业务层
 - 1、base 工具类；基础枚举值、vo的定义；系统配置
 - 2、service，具体的业务，抽离处理，可以供多端调用实现：web、openApi等
@@ -59,11 +62,13 @@
 
 
 #### 其他
-[演示地址](http://www.jiubankeji.cn/web_iot) 
+[演示地址](http://www.jiubankeji.cn/web_iot)
 
 帐号/密码：
 `18812345678` `Io@t0315Jb!`
 
 **如有疑问或者需要源码的可以随时联系：**
 
-<img src="./iot-ap/doc/jb_qrcode.jpg" width="120" heigth="80"/>
+<img src="https://www.sinozg.cn/resources/jb_qrcode.jpg" width="150" height="150"/>
+
+(扫码或者直接搜索`jiubanyun_iot`添加微信)
