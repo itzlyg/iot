@@ -69,6 +69,6 @@
 
 **如有疑问或者需要源码的可以随时联系：**
 
-<img src="https://www.sinozg.cn/resources/jb_qrcode.jpg" width="150" height="150"/>
+<img src="./iot-ap/doc/jb_qrcode.jpg" width="150" height="150"/>
 
 (扫码或者直接搜索`jiubanyun_iot`添加微信)
