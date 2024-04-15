@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.sink.mapper.ThingModelMessageMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, prod_key, device_code, device_name, mid, mid_name, uid, type, identifier, code, ts, report_time, data, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="staDetail" parameterType="cn.sinozg.applet.biz.sink.vo.request.TmStaRequest" resultType="cn.sinozg.applet.biz.sink.vo.response.TmStaResponse">
+        select ts dateTime, count(*) as data from(select DATE_FORMAT(fROM_UNIXTIME(m.ts/1000),'%Y-%m-%d %H:00:00') as ts from t_sink_thing_model_message m
+        where m.ts &gt;= #{p.start,jdbcType=BIGINT} and m.ts &lt;= #{p.end,jdbcType=BIGINT}
+        <if test="p.uid != null and p.uid != ''">
+            and m.uid = #{p.uid,jdbcType=VARCHAR}
+        </if>
+        ) a group by ts order by ts asc
+    </select>
+
+    <select id="typeIdentifierPage" resultType="cn.sinozg.applet.biz.sink.vo.response.TmSinkPageResponse" parameterType="cn.sinozg.applet.biz.sink.vo.request.TmSinkPageRequest">
+        select m.ts, m.mid_name, m.mid,m.prod_key,m.device_name,m.type,m.identifier,m.code,m.data,m.report_time
+        from t_sink_thing_model_message m where m.device_code = #{p.deviceCode,jdbcType=VARCHAR}
+        <if test="p.type != null and p.type != ''">
+            and m.type = #{p.type,jdbcType=VARCHAR}
+        </if>
+        <if test="p.identifier != null and p.identifier != ''">
+            and m.identifier = #{p.identifier,jdbcType=VARCHAR}
+        </if>
+        order by m.ts desc
+    </select>
+</mapper>

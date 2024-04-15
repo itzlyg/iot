@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.system.mapper.UserInfoMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_name, nick_name, dept_id, pass_word, email, phone_num, sex, avatar, user_type, tenant_id, data_status, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <sql id="userListOrPage">
+        select ui.id, ui.user_name, ui.nick_name, ui.email, ui.phone_num,  ui.avatar, ui.data_status, ui.created_time, d.dept_name,
+        (select group_concat(ur.role_name, '') from sys_user_role ur where ur.user_id = ui.id ) role_name_str
+        from sys_user_info ui
+        left join sys_dept_info d on ui.dept_id = d.id
+        <where>
+            <if test="p.phoneNum != null and p.phoneNum != ''">
+                AND ui.phone_num =  #{p.phoneNum}
+            </if>
+            <if test="p.deptId != null and p.deptId != ''">
+                AND ui.dept_id = #{p.deptId}
+            </if>
+            <if test="p.roleCode != null and p.roleCode != ''">
+                AND exists(select 1 from sys_user_role ur where ur.user_id = ui.id and ur.role_code = #{p.roleCode})
+            </if>
+            <if test="p.dataStatus != null and p.dataStatus != ''">
+                AND ui.data_status = #{p.dataStatus}
+            </if>
+            <if test="p.nickName != null and p.nickName != ''">
+                AND ui.nick_name like concat('%', #{p.nickName}, '%')
+            </if>
+            <if test="p.beginTime != null and p.beginTime != ''">
+                and ui.created_time &gt;= STR_TO_DATE(concat(#{p.beginTime,jdbcType=VARCHAR}, ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="p.endTime != null and p.endTime != ''">
+                and ui.created_time &lt;= STR_TO_DATE(concat(#{p.endTime,jdbcType=VARCHAR}, ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+            </if>
+        </where>
+        order by ui.created_time desc
+    </sql>
+
+    <select id="userInfo" resultType="cn.sinozg.applet.common.core.model.LoginUserVo">
+        select id, user_name, dept_id,nick_name, sex, avatar, tenant_id from sys_user_info
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="passwordInfo" resultType="cn.sinozg.applet.common.core.model.LoginUserVo">
+        select id, user_name, password openId from sys_user_info
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="loginUserInfoByPwd" resultType="cn.sinozg.applet.biz.system.vo.response.LoginUserQueryResponse" parameterType="cn.sinozg.applet.biz.system.vo.request.PasswordLoginRequest">
+        select id,nick_name, pass_word password
+        from sys_user_info
+        where data_status = '01' and(user_name = #{p.userName,jdbcType=VARCHAR} or phone_num = #{p.userName,jdbcType=VARCHAR})
+        and tenant_id =  #{p.tenantId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="userInfoPage" resultType="cn.sinozg.applet.biz.system.vo.response.UserInfoPageResponse" parameterType="cn.sinozg.applet.biz.system.vo.request.UserInfoPageRequest">
+       <include refid="userListOrPage"/>
+    </select>
+
+    <select id="userSelectByDept" parameterType="string" resultType="cn.sinozg.applet.biz.system.vo.response.DictListResponse">
+        WITH RECURSIVE cd AS (
+            SELECT di.id, di.tenant_id from sys_dept_info di where di.pater_id = #{deptId,jdbcType=VARCHAR}
+            UNION ALL
+            SELECT sdi.id,sdi.tenant_id from sys_dept_info sdi, cd c where sdi.pater_id = c.id
+        )
+        SELECT u.id code, u.nick_name name from sys_user_info u
+        where exists(select 1 from cd c where c.id = u.dept_id)
+    </select>
+</mapper>

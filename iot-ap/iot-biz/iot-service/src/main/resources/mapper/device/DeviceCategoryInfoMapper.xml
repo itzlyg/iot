@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.device.mapper.DeviceCategoryInfoMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, category_code, parent_code, category_name, category_desc, seq_no, is_valid, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <sql id="treePage">
+        select c.id, c.category_code, c.parent_code, c.category_name, c.category_desc, c.seq_no, c.is_valid, c.created_time,
+        (select count(1) from t_set_device_category_info ci where ci.parent_code = c.category_code) has_children
+        from t_set_device_category_info c
+        <where>
+            <if test="p.uid != null and p.uid != ''">
+                and c.created_by = #{p.uid,jdbcType=VARCHAR}
+            </if>
+            <choose>
+                <when test="p.parentCode != null and p.parentCode != ''">
+                    and c.parent_code = #{p.parentCode,jdbcType=VARCHAR}
+                </when>
+                <otherwise>
+                    and (c.parent_code is null or c.parent_code = '')
+                </otherwise>
+            </choose>
+            <if test="p.beginTime != null and p.beginTime != ''">
+                and c.created_time &gt;= STR_TO_DATE(concat(#{p.beginTime,jdbcType=VARCHAR}, ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="p.endTime != null and p.endTime != ''">
+                and c.created_time &lt;= STR_TO_DATE(concat(#{p.endTime,jdbcType=VARCHAR}, ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+            </if>
+        </where>
+        order by c.created_time desc
+    </sql>
+
+    <select id="pageInfo" resultType="cn.sinozg.applet.biz.device.vo.response.DeviceCategoryInfoPageResponse" parameterType="cn.sinozg.applet.biz.device.vo.request.DeviceCategoryInfoPageRequest">
+        <include refid="treePage"/>
+    </select>
+
+
+    <select id="moduleList" resultType="cn.sinozg.applet.biz.system.vo.response.DictListResponse" parameterType="cn.sinozg.applet.biz.protocol.vo.request.SelectByNameRequest">
+        select category_code code, category_name name
+        from t_set_device_category_info where is_valid = 1
+        <if test="p.uid != null and p.uid != ''">
+            and created_by = #{p.uid,jdbcType=VARCHAR}
+        </if>
+        <if test="p.name != null and p.name != ''">
+            and category_name like CONCAT('%',#{p.name,jdbcType=VARCHAR},'%')
+        </if>
+        order by id
+    </select>
+
+    <select id="findSubCategory" resultType="cn.sinozg.applet.biz.device.vo.response.DeviceCategoryInfoInfoResponse" parameterType="cn.sinozg.applet.biz.device.vo.request.DeviceCategoryInfoPageRequest">
+        <include refid="treePage"/>
+    </select>
+</mapper>

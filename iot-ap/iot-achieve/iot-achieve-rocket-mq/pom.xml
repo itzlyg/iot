@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.sinozg.applet</groupId>
+		<artifactId>iot-achieve</artifactId>
+		<version>${revision}</version>
+	</parent>
+	<artifactId>iot-achieve-rocket-mq</artifactId>
+	<name>${project.artifactId}</name>
+	<description>基于rocket-mq消息实现消息队列</description>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>cn.sinozg.applet</groupId>
+			<artifactId>iot-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.sinozg.applet</groupId>
+			<artifactId>applet-mq</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<artifactId>rocketmq-acl</artifactId>
+			<groupId>org.apache.rocketmq</groupId>
+			<exclusions>
+				<exclusion>
+					<artifactId>okio-jvm</artifactId>
+					<groupId>com.squareup.okio</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>error_prone_annotations</artifactId>
+					<groupId>com.google.errorprone</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java-util</artifactId>
+		</dependency>
+		<dependency>
+			<artifactId>rocketmq-client</artifactId>
+			<groupId>org.apache.rocketmq</groupId>
+			<exclusions>
+				<exclusion>
+					<artifactId>guava</artifactId>
+					<groupId>com.google.guava</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>cn.sinozg.applet</groupId>
+			<artifactId>applet-ws-vertx-boot-starter</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.system.mapper.MenuInfoMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, menu_code, parent_code, seq_no, menu_name, menu_url, menu_icon, menu_type, data_valid, channel, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="userMenuOrButton" resultType="cn.sinozg.applet.biz.system.vo.response.UserSystemMenuResponse" parameterType="cn.sinozg.applet.biz.system.vo.request.UserRoleQueryRequest">
+        select mi.menu_code id, mi.parent_code parId, mi.menu_name label, mi.menu_url, mi.menu_icon,
+               mi.seq_no
+        from sys_menu_info mi
+             left join sys_role_menu rr on rr.resource_code = mi.menu_code
+             left join sys_role_info ri on rr.role_code = ri.role_code
+             left join sys_user_role ur on ri.role_code = ur.role_code
+        where mi.data_valid = '00' and mi.menu_type = #{tp,jdbcType=VARCHAR}
+          and ur.user_id = #{uid,jdbcType=VARCHAR} and mi.channel = #{channel,jdbcType=VARCHAR}
+        ORDER BY mi.parent_code, mi.seq_no
+    </select>
+
+    <select id="menuLazyPage" resultType="cn.sinozg.applet.biz.system.vo.response.MenuLazyPageResponse" parameterType="cn.sinozg.applet.biz.system.vo.request.MenuLazyPageRequest">
+        select id, menu_code, parent_code parentMenuCode, seq_no, menu_name, menu_url, menu_icon, menu_type, channel,
+               (select count(1) from sys_menu_info o where o.parent_code = i.menu_code) has_children
+        from sys_menu_info i where 1 = 1
+        <if test="parCode != null and parCode != ''">
+            and i.parent_code = #{parCode,jdbcType=VARCHAR}
+        </if>
+        <if test="menuCode != null and menuCode != ''">
+            and i.menu_code = #{menuCode,jdbcType=VARCHAR}
+        </if>
+        <if test="menuName != null and menuName != ''">
+             and i.menu_name LIKE CONCAT('%',#{menuName},'%')
+        </if>
+        order by seq_no
+    </select>
+
+    <select id="menuTree" resultType="cn.sinozg.applet.common.core.model.TreeSelect" parameterType="cn.sinozg.applet.biz.system.vo.request.MenuTreeRequest">
+        select i.menu_code id, i.parent_code par_id, i.seq_no , i.menu_name label
+        from sys_menu_info i where i.data_valid = '00'
+        <if test="menuCode != null and menuCode != ''">
+            and i.menu_code = #{menuCode,jdbcType=VARCHAR}
+        </if>
+        <if test="channel != null and channel != ''">
+            and i.channel = #{channel,jdbcType=VARCHAR}
+        </if>
+        order by menu_code
+    </select>
+
+    <select id="hasChildByMenuId" resultType="Integer">
+        select count(1) from sys_menu_info where parent_code = #{menuId}
+    </select>
+
+    <select id="maxCodeNo" resultType="java.lang.String" parameterType="cn.sinozg.applet.biz.system.vo.request.MenuButtonMaxCode">
+        SELECT MAX(menu_code) FROM sys_menu_info WHERE data_valid = '00'
+        AND parent_code = #{parCode}
+        and menu_type = #{type}
+    </select>
+</mapper>

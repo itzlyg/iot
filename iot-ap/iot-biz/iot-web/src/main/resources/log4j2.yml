@@ -1,0 +1,108 @@
+Configuration:
+  name: LogConfig
+  status: INFO
+  strict: true
+
+  Properties:
+    Property:
+      - name: filepath
+        value: "${sys:user.home}/iot_logs"
+      - name: pattern
+        value: "[%d{yyyy-MM-dd HH:mm:ss SSS}][%-5p][%-24t][%-32X{traceId}][%-32c{1.} %-4L][info=%m]%n"
+
+  Appenders:
+    Console:
+      name: ConsoleLog
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: ${pattern}
+
+    RollingRandomAccessFile:
+      - name: InfoLog
+        fileName: ${filepath}/iot.log
+        filePattern: ${filepath}/bak/infoLog-%d{yy-MM-dd}-%i.log.gz
+        Filters:
+          #  此处过滤掉 error级别的日志，其他的打印
+          ThresholdFilter:
+            - level: error
+              onMatch: DENY
+              onMismatch: NEUTRAL
+            - level: info
+              onMatch: ACCEPT
+              onMismatch: DENY
+        PatternLayout:
+          pattern: ${pattern}
+
+        Policies:
+          TimeBasedTriggeringPolicy:
+            interval: 1
+            modulate: false
+          SizeBasedTriggeringPolicy:
+            size: 24MB
+        DefaultRolloverStrategy:
+          max: 100
+
+          Delete:
+            basePath: ${filepath}/bak/
+            maxDepth: 1
+            IfFileName:
+              glob: infoLog-*.log.gz
+            IfLastModified:
+              - age: 31D
+                IfAny: 
+                  IfAccumulatedFileSize:
+                    exceeds: 1 GB
+                  IfAccumulatedFileCount:
+                    exceeds: 1
+
+      - name: ErrorLog
+        fileName: ${filepath}/iot_error.log
+        filePattern: ${filepath}/bak/errorLog-%d{yy-MM-dd}-%i.log.gz
+        ThresholdFilter:
+          level: ERROR
+          onMatch: ACCEPT
+          onMismatch: DENY
+
+        PatternLayout:
+          pattern: ${pattern}
+
+        Policies:
+          TimeBasedTriggeringPolicy:
+            interval: 1
+            modulate: false
+          SizeBasedTriggeringPolicy:
+            size: 24MB
+        DefaultRolloverStrategy:
+          max: 100
+
+          Delete:
+            basePath: ${filepath}/bak/
+            maxDepth: 1
+            IfFileName:
+              glob: errorLog-*.log.gz
+            IfLastModified:
+              - age: 31D
+                IfAny:
+                  IfAccumulatedFileSize:
+                    exceeds: 1 GB
+                  IfAccumulatedFileCount:
+                    exceeds: 1
+
+  Loggers:
+    Root:
+      level: INFO
+      AppenderRef:
+        - ref: ConsoleLog
+
+    Logger:
+      - name: cn.sinozg.applet
+        level: INFO
+        AppenderRef:
+          - ref: InfoLog
+          - ref: ErrorLog
+
+      - name: bizCustomLevelLog
+        level: INFO
+        AppenderRef:
+          - ref: InfoLog
+          - ref: ErrorLog

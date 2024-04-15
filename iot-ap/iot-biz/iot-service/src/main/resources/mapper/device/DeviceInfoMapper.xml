@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.device.mapper.DeviceInfoMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, device_code, device_name, prod_key, device_type, seq_no, is_valid, tenant_id, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="pageInfo" resultType="cn.sinozg.applet.biz.device.vo.response.DeviceInfoPageResponse" parameterType="cn.sinozg.applet.biz.device.vo.request.DeviceInfoPageRequest">
+        select d.id, d.device_code, d.device_name, p.name prod_name, d.device_type, d.seq_no, d.is_valid, d.created_time
+            from t_set_device_info d left join t_set_prod_info p on p.prod_key = d.prod_key
+        <if test="p.groupId != null and p.groupId != ''">
+            left join t_set_device_group_mapping m on m.device_id = d.id
+        </if>
+        <where>
+            <if test="p.uid != null and p.uid != ''">
+                and d.created_by = #{p.uid,jdbcType=VARCHAR}
+            </if>
+            <if test="p.groupId != null and p.groupId != ''">
+                and m.group_id = #{p.groupId,jdbcType=VARCHAR}
+            </if>
+            <if test="p.beginTime != null and p.beginTime != ''">
+                and d.created_time &gt;= STR_TO_DATE(concat(#{p.beginTime,jdbcType=VARCHAR}, ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="p.endTime != null and p.endTime != ''">
+                and d.created_time &lt;= STR_TO_DATE(concat(#{p.endTime,jdbcType=VARCHAR}, ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+            </if>
+        </where>
+        order by d.created_time desc
+    </select>
+
+    <select id="deviceInfoForProtocol" parameterType="cn.sinozg.applet.biz.device.vo.request.DeviceInfoProtocolRequest" resultType="cn.sinozg.applet.iot.protocol.vo.response.DeviceInfoProtocolResponse">
+        select d.id, d.device_code, d.device_name, d.prod_key , d.device_type model, d.created_by uid
+        from t_set_device_info d
+        <where>
+            <if test="p.prodKey != null and p.prodKey != ''">
+                and d.prod_key = #{p.prodKey,jdbcType=VARCHAR}
+            </if>
+            <if test="p.deviceCode != null and p.deviceCode != ''">
+                and d.device_code = #{p.deviceCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="protocolIdForDevice" parameterType="cn.sinozg.applet.biz.device.vo.request.DeviceInfoProtocolRequest" resultType="string">
+        select p.protocol_id
+        from t_set_device_info d left join t_set_prod_info p on p.prod_key = d.prod_key
+        <where>
+            <if test="p.prodKey != null and p.prodKey != ''">
+                and d.prod_key = #{p.prodKey,jdbcType=VARCHAR}
+            </if>
+            <if test="p.deviceCode != null and p.deviceCode != ''">
+                and d.device_code = #{p.deviceCode,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

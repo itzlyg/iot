@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.sink.mapper.TaskInfoLogMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, task_id, ts, content, success, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="taskIdPage" resultType="cn.sinozg.applet.biz.sink.vo.response.TaskLogRecordPageResponse">
+        select task_id, ts,content, success  from t_sink_task_info_log where task_id = #{taskId} order by ts desc
+    </select>
+
+</mapper>

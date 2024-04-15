@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.system.mapper.RoleInfoMapper">
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, role_code, role_name, role_desc, sys_role, tenant_id, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="roleKeyNameMap" resultType="cn.sinozg.applet.biz.system.entity.RoleInfo" parameterType="java.util.List">
+        select role_code,role_name from sys_role_info
+        where role_code in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="userRolePage" resultType="cn.sinozg.applet.biz.system.vo.response.RoleInfoPageResponse" parameterType="cn.sinozg.applet.biz.system.vo.request.RoleInfoPageRequest">
+        select r.id, r.role_code, r.role_name, r.role_desc, r.updated_time
+            from sys_role_info r
+        <where>
+            <if test="p.roleName != '' and p.roleName != null">
+                and r.role_name like CONCAT('%',#{p.roleName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test='p.roleCode != null and p.roleCode != null'>
+                and r.role_code like CONCAT('%',#{p.roleCode,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by r.id asc
+    </select>
+
+    <select id="userRoles" resultType="cn.sinozg.applet.biz.system.vo.response.UserRoleResponse" parameterType="cn.sinozg.applet.biz.system.vo.request.RoleInfoPageRequest">
+        select role_code, role_name from sys_role_info r
+        order by r.role_code desc
+    </select>
+</mapper>

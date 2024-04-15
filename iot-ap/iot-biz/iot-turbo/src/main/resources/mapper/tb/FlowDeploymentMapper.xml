@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.turbo.tb.mapper.FlowDeploymentMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, flow_deploy_id, flow_module_id, flow_name, flow_key, flow_model, status, archive, tenant, caller, tenant_id, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="selectByDeployId" resultType="cn.sinozg.applet.turbo.tb.entity.FlowDeployment">
+        select <include refid="Base_Column_List"/>
+            from t_scene_flow_deployment where flow_deploy_id = #{flowDeployId}
+    </select>
+
+    <select id="selectByModuleId" resultType="cn.sinozg.applet.turbo.tb.entity.FlowDeployment">
+        select <include refid="Base_Column_List"/>
+        from t_scene_flow_deployment where flow_module_id = #{flowModuleId}  ORDER BY id DESC LIMIT 1
+    </select>
+</mapper>

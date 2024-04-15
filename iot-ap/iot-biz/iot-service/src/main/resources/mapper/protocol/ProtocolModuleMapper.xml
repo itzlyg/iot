@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.protocol.mapper.ProtocolModuleMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, protocol_name, module_type, analysis_type, analysis_id, protocol_type, jar_id, jar_name, protocol_script_type, data_status, tenant_id, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+
+    <select id="pageInfo" resultType="cn.sinozg.applet.biz.protocol.vo.response.ProtocolModulePageResponse" parameterType="cn.sinozg.applet.biz.protocol.vo.request.ProtocolModulePageRequest">
+        select m.id, m.protocol_name, a.script_name analysis_name, m.jar_name, m.protocol_type, m.data_status
+            from t_iot_protocol_module m
+            left join t_iot_analysis_script a on a.id = m.analysis_id
+        <where>
+            <if test="p.uid != null and p.uid != ''">
+                and m.created_by = #{p.uid,jdbcType=VARCHAR}
+            </if>
+            <if test="p.protocolName != null and p.protocolName != ''">
+                and m.protocol_name like CONCAT('%',#{p.protocolName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="p.beginTime != null and p.beginTime != ''">
+                and m.created_time &gt;= STR_TO_DATE(concat(#{p.beginTime,jdbcType=VARCHAR}, ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="p.endTime != null and p.endTime != ''">
+                and m.created_time &lt;= STR_TO_DATE(concat(#{p.endTime,jdbcType=VARCHAR}, ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+            </if>
+        </where>
+        order by m.created_time desc
+    </select>
+
+    <select id="moduleList" resultType="cn.sinozg.applet.biz.system.vo.response.DictListResponse" parameterType="cn.sinozg.applet.biz.protocol.vo.request.ProtocolModuleSelectRequest">
+        select id code, protocol_name name
+        from t_iot_protocol_module where data_status = '01'
+        <if test="p.uid != null and p.uid != ''">
+            and created_by = #{p.uid,jdbcType=VARCHAR}
+        </if>
+        <if test="p.protocolName != null and p.protocolName != ''">
+            and protocol_name like CONCAT('%',#{p.protocolName,jdbcType=VARCHAR},'%')
+        </if>
+        order by id
+    </select>
+
+    <select id="idListByAnalysisId" resultType="java.lang.String">
+        select id from t_iot_protocol_module where  analysis_id = #{analysisId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="protocolModuleStateType" resultType="cn.sinozg.applet.iot.protocol.vo.response.ProtocolModuleRegisterResponse" parameterType="cn.sinozg.applet.biz.protocol.vo.request.ProtocolModuleStateTypeRequest">
+        select id, protocol_name, module_type, protocol_type, jar_id, analysis_id, analysis_type, protocol_script_type
+        from t_iot_protocol_module m
+        where m.data_status = #{p.dataStatus,jdbcType=VARCHAR} and m.module_type = #{p.moduleType,jdbcType=VARCHAR}
+        order by m.created_time desc
+    </select>
+</mapper>

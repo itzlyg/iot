@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.system.mapper.UserRoleMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, role_code, role_name, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="userRoleInfo" parameterType="java.lang.String" resultType="cn.sinozg.applet.common.core.model.RoleInfoVo">
+        select ur.id roleId, ur.role_code roleKey
+        from sys_user_role ur left join sys_role_info ri on ur.role_code = ri.role_code
+        where ur.user_id = #{userId}
+    </select>
+
+    <delete id="deleteByRoleCode" parameterType="java.lang.String">
+        delete from sys_user_role where role_code = #{roleCode}
+    </delete>
+</mapper>

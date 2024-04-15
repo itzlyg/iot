@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.oauth.mapper.OauthClientMapper">
+
+    <sql id="Base_Column_List">
+        id, client_id, client_secret, open_id, redirect_uri, allow_url, mode, scopes, access_token_timeout, refresh_token_timeout, bind_user, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+</mapper>

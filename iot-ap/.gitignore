@@ -1,0 +1,38 @@
+/target
+target
+!.mvn/wrapper/maven-wrapper.jar
+
+TS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+.svn
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+*.jar
+*.class
+*.log
+*.war
+*.xml.bak
+/**/dependency-reduced-pom.xml
+
+### mac os ###
+/**/.DS_Store
+.DS_Store

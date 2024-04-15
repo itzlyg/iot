@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.turbo.tb.mapper.InstanceDataMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, node_instance_id, flow_instance_id, instance_data_id, flow_deploy_id, flow_module_id, node_key, instance_data, type, archive, tenant, caller, tenant_id, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="selectRecent" parameterType="cn.sinozg.applet.turbo.tb.entity.InstanceData" resultType="cn.sinozg.applet.turbo.tb.entity.InstanceData">
+        select <include refid="Base_Column_List"/> from t_scene_instance_data
+        <where>
+            <if test="p.instanceDataId != null and p.instanceDataId != ''">
+                and instance_data_id = #{p.instanceDataId,jdbcType=VARCHAR}
+            </if>
+            <if test="p.flowInstanceId != null and p.flowInstanceId != ''">
+                and flow_instance_id = #{p.flowInstanceId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+</mapper>

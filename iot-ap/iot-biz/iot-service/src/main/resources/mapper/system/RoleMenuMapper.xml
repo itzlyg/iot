@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.system.mapper.RoleMenuMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, role_code, resource_code, resource_type, data_valid, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="roleCheckedMenu" parameterType="cn.sinozg.applet.biz.system.vo.request.RoleMenuQueryRequest" resultType="java.lang.String">
+        SELECT m.menu_code FROM sys_menu_info m
+        LEFT JOIN sys_role_menu rm on m.menu_code = rm.resource_code
+        where m.data_valid = '00' AND rm.data_valid = '00'
+        <if test="channel != '' and channel != null">
+            AND m.channel = #{channel,jdbcType=VARCHAR}
+        </if>
+        <if test="roleCode != '' and roleCode != null">
+            AND rm.role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <delete id="deleteResource">
+        delete from sys_role_menu where role_code = #{code}
+        <if test="channel != '' and channel != null">
+            and resource_code in (
+            select menu_code from sys_menu_info where channel = #{channel}
+            )
+        </if>
+    </delete>
+
+    <select id="checkMenuExistRole" resultType="Integer">
+        select count(1) from sys_role_menu where resource_code = #{menuCode}
+    </select>
+
+</mapper>

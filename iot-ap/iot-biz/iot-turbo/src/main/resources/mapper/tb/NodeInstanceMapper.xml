@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.turbo.tb.mapper.NodeInstanceMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, node_instance_id, flow_instance_id, source_node_instance_id, instance_data_id, flow_deploy_id, source_node_key, node_key, status, archive, tenant, caller, tenant_id, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="selectInfo" parameterType="cn.sinozg.applet.turbo.tb.entity.NodeInstance" resultType="cn.sinozg.applet.turbo.tb.entity.NodeInstance">
+        select  <include refid="Base_Column_List"/> FROM t_scene_node_instance
+        <where>
+            <if test="p.status != null">
+                and status = #{p.status}
+            </if>
+            <if test="p.flowInstanceId != null and p.flowInstanceId != ''">
+                and flow_instance_id = #{p.flowInstanceId,jdbcType=VARCHAR}
+            </if>
+            <if test="p.sourceNodeInstanceId != null and p.sourceNodeInstanceId != ''">
+                and source_node_instance_id = #{p.sourceNodeInstanceId,jdbcType=VARCHAR}
+            </if>
+            <if test="p.nodeKey != null and p.nodeKey != ''">
+                and node_key = #{p.nodeKey,jdbcType=VARCHAR}
+            </if>
+            <if test="p.nodeInstanceId != null and p.nodeInstanceId != ''">
+                and node_instance_id = #{p.nodeInstanceId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.turbo.tb.mapper.NodeInstanceLogMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, node_instance_id, flow_instance_id, instance_data_id, node_key, type, status, archive, tenant, caller, tenant_id, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+</mapper>

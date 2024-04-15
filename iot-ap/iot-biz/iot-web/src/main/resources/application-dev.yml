@@ -1,0 +1,33 @@
+# 开发环境配置
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/iot?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&nullCatalogMeansCurrent=true
+    username: root
+    password: ?rootXyb_
+
+  # redis 配置
+  redis:
+    # 地址
+    host: 127.0.0.1
+    # 端口，默认为6379
+    port: 6379
+    # 密码
+    password: Redis_19
+    database: 4
+
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+app:
+  ws:
+    port: 8099
+
+  protocol:
+    module-dir: F:\\document\\temp\\iot\\module
+    analysis-dir: F:\\document\\temp\\iot\\analysis
+    jar-dir: F:\\document\\temp\\iot\\jar

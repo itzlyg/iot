@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.biz.sink.mapper.PropertyLogMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, prod_key, device_code, ts, record_json, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+    <select id="devicePropertyHistory" resultType="cn.sinozg.applet.biz.sink.vo.response.PropertyInfoHistoryResponse" parameterType="cn.sinozg.applet.biz.sink.vo.request.DevicePropertyHistoryRequest">
+        select r.device_code, r.ts, r.record_json ->> "$.\"#{p.name}\"" as `value` from t_sink_property_log r where r.prod_key = #{p.prodKey,jdbcType=VARCHAR} and r.device_code = #{p.deviceCode,jdbcType=VARCHAR}
+        and r.ts &gt;= #{p.start,jdbcType=BIGINT} and r.ts &lt;= #{p.end,jdbcType=BIGINT} order by r.ts asc limit 0 , #{p.size,jdbcType=BIGINT}
+    </select>
+</mapper>

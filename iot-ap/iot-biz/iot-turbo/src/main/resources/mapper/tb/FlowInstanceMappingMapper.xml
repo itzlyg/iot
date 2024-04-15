@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sinozg.applet.turbo.tb.mapper.FlowInstanceMappingMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, flow_instance_id, node_instance_id, node_key, sub_flow_instance_id, type, archive, tenant, caller, remark, updated_by, updated_time, created_by, created_time
+    </sql>
+
+
+    <select id="selectFlowInstanceMappingList" resultType="cn.sinozg.applet.turbo.tb.entity.FlowInstanceMapping" parameterType="cn.sinozg.applet.turbo.tb.entity.FlowInstanceMapping">
+        select <include refid="Base_Column_List"/>
+        from t_scene_flow_instance_mapping where flow_instance_id = #{p.flowInstanceId}
+        and node_instance_id = #{p.nodeInstanceId}
+    </select>
+
+    <update id="updateType" parameterType="cn.sinozg.applet.turbo.tb.entity.FlowInstanceMapping">
+        update t_scene_flow_instance_mapping set type = #{type}
+        WHERE flow_instance_id = #{p.flowInstanceId}  and node_instance_id = #{p.nodeInstanceId}
+    </update>
+</mapper>
