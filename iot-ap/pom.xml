@@ -23,19 +23,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<shade.plugin.version>3.5.1</shade.plugin.version>
-		<maven.compiler.version>3.12.1</maven.compiler.version>
+		<shade.plugin.version>3.5.3</shade.plugin.version>
+		<maven.compiler.version>3.13.0</maven.compiler.version>
 		<resources.plugin.version>3.3.1</resources.plugin.version>
 		<maven-deploy.version>3.1.1</maven-deploy.version>
-		<maven-jar.version>3.3.0</maven-jar.version>
+		<maven-jar.version>3.4.1</maven-jar.version>
 
 		<maven.surefire.version>3.2.5</maven.surefire.version>
-		<maven-deploy.version>3.1.1</maven-deploy.version>
-		<maven-jar.version>3.3.0</maven-jar.version>
 		<springdoc.version>1.8.0</springdoc.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
 		<applet.version>1.0.0-SNAPSHOT</applet.version>
-		<netty.version>4.1.108.Final</netty.version>
+		<netty.version>4.1.109.Final</netty.version>
 
 		<p6spy.version>3.9.1</p6spy.version>
 		<knife4j.ui.version>4.5.0</knife4j.ui.version>
@@ -50,8 +48,8 @@
 		<rocketmq.version>5.2.0</rocketmq.version>
 
 		<vertx.version>4.5.7</vertx.version>
-		<commons-text.version>1.11.0</commons-text.version>
-		<taos.version>3.2.8</taos.version>
+		<commons-text.version>1.12.0</commons-text.version>
+		<taos.version>3.2.9</taos.version>
 		<protobuf.version>3.25.3</protobuf.version>
 		<groovy.version>3.0.19</groovy.version>
 

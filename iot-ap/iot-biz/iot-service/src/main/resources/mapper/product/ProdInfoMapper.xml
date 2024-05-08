@@ -7,21 +7,23 @@
         id, prod_key, name, img_id, classify_id, protocol_id, type_id, type_name, attribute_json, function_json, event_json, tenant_id, remark, updated_by, updated_time, created_by, created_time
     </sql>
 
-    <select id="pageInfo" resultType="cn.sinozg.applet.biz.product.entity.ProdInfo" parameterType="cn.sinozg.applet.biz.product.vo.request.ProdInfoPageRequest">
-        select <include refid="Base_Column_List"/>
-            from t_set_prod_info
+    <select id="pageInfo" resultType="cn.sinozg.applet.biz.product.vo.response.ProdInfoPageResponse" parameterType="cn.sinozg.applet.biz.product.vo.request.ProdInfoPageRequest">
+        select t.id, t.prod_key, t.name, t.img_id, t.classify_id, t.protocol_id, t.type_id, t.type_name,
+            (select category_name from t_set_device_category_info where category_code = t.classify_id) classify_name,
+            (select protocol_name from t_iot_protocol_module where id = t.protocol_id) protocol_name
+            from t_set_prod_info t
         <where>
             <if test="p.uid != null and p.uid != ''">
-                and created_by = #{p.uid,jdbcType=VARCHAR}
+                and t.created_by = #{p.uid,jdbcType=VARCHAR}
             </if>
             <if test="p.beginTime != null and p.beginTime != ''">
-                and created_time &gt;= STR_TO_DATE(concat(#{p.beginTime,jdbcType=VARCHAR}, ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+                and t.created_time &gt;= STR_TO_DATE(concat(#{p.beginTime,jdbcType=VARCHAR}, ' 00:00:00'),'%Y-%m-%d %H:%i:%s')
             </if>
             <if test="p.endTime != null and p.endTime != ''">
-                and created_time &lt;= STR_TO_DATE(concat(#{p.endTime,jdbcType=VARCHAR}, ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+                and t.created_time &lt;= STR_TO_DATE(concat(#{p.endTime,jdbcType=VARCHAR}, ' 23:59:59'),'%Y-%m-%d %H:%i:%s')
             </if>
         </where>
-        order by created_time desc
+        order by t.created_time desc
     </select>
 
     <select id="selectProdList" resultType="cn.sinozg.applet.biz.product.vo.response.ProdListResponse">

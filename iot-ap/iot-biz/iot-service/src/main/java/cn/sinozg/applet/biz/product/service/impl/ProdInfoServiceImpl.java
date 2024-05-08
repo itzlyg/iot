@@ -26,7 +26,6 @@ import cn.sinozg.applet.common.core.base.PagingRequest;
 import cn.sinozg.applet.common.exception.CavException;
 import cn.sinozg.applet.common.utils.BizUtil;
 import cn.sinozg.applet.common.utils.JsonUtil;
-import cn.sinozg.applet.common.utils.PageConvert;
 import cn.sinozg.applet.common.utils.PageUtil;
 import cn.sinozg.applet.common.utils.PojoUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -93,9 +92,9 @@ public class ProdInfoServiceImpl extends ServiceImpl<ProdInfoMapper, ProdInfo> i
 
     @Override
     public BasePageResponse<List<ProdInfoPageResponse>> pageInfo(PagingRequest page, ProdInfoPageRequest params) {
-        PageUtil<ProdInfo, ProdInfoPageRequest> pu = (p, q) -> mapper.pageInfo(p, q);
+        PageUtil<ProdInfoPageResponse, ProdInfoPageRequest> pu = (p, q) -> mapper.pageInfo(p, q);
         params.setUid(BizUtil.demoUser());
-        return PageConvert.convert(pu.page(page, params), ProdInfoPageResponse.class, this::prodJsonInfo);
+        return pu.page(page, params);
     }
 
     /**

@@ -30,7 +30,7 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					<forceLegacyJavacApi>true</forceLegacyJavacApi>
 					<useIncrementalCompilation>false</useIncrementalCompilation>
 					<encoding>utf8</encoding>
 				</configuration>

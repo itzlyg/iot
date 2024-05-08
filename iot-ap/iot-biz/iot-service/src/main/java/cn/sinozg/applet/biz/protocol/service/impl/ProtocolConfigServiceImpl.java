@@ -5,6 +5,7 @@ import cn.sinozg.applet.biz.protocol.enums.ProtocolType;
 import cn.sinozg.applet.biz.protocol.mapper.ProtocolConfigMapper;
 import cn.sinozg.applet.biz.protocol.service.ProtocolConfigService;
 import cn.sinozg.applet.biz.protocol.vo.module.BaseProtocolConfig;
+import cn.sinozg.applet.biz.protocol.vo.module.ProtocolConfigMqtt;
 import cn.sinozg.applet.biz.protocol.vo.request.ProtocolModuleSaveBaseRequest;
 import cn.sinozg.applet.common.exception.CavException;
 import cn.sinozg.applet.common.utils.JsonUtil;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +45,14 @@ public class ProtocolConfigServiceImpl extends ServiceImpl<ProtocolConfigMapper,
             this.remove(new LambdaQueryWrapper<ProtocolConfig>().eq(ProtocolConfig::getProtocolId, protocolId));
         }
         ProtocolConfig entity = PojoUtil.copyBean(config, ProtocolConfig.class);
+        if (config instanceof ProtocolConfigMqtt) {
+            ProtocolConfigMqtt mqtt = (ProtocolConfigMqtt) config;
+            List<String> subscribe = mqtt.getSubscribe();
+            if (CollectionUtils.isEmpty(subscribe)) {
+                subscribe = new ArrayList<>();
+            }
+            entity.setSubscribe(JsonUtil.toJson(subscribe));
+        }
         entity.setProtocolId(protocolId);
         boolean result = this.save(entity);
         if (!result) {
@@ -72,6 +82,13 @@ public class ProtocolConfigServiceImpl extends ServiceImpl<ProtocolConfigMapper,
             }
         }
         PojoUtil.copyBean(config, protocolConfig);
+        if (type == ProtocolType.MQTT) {
+            ProtocolConfigMqtt mqtt = (ProtocolConfigMqtt) protocolConfig;
+            String subscribe = config.getSubscribe();
+            if (StringUtils.isNotBlank(subscribe)) {
+                mqtt.setSubscribe(JsonUtil.toPojos(subscribe, String.class));
+            }
+        }
         return protocolConfig;
     }
 }

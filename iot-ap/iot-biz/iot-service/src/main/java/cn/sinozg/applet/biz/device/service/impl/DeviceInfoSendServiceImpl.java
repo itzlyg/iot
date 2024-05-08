@@ -150,13 +150,13 @@ public class DeviceInfoSendServiceImpl implements DeviceInfoSendService {
     @Override
     public void sendTask(String deviceId, String sendName, Object o) {
         String mid = send(deviceId, sendName, TmType.SERVICE, TmIdentifierType.REPORT.getEnName(), o);
-        log.info("发送后返回的结果为：{}", mid);
+        log.info("发送task后返回的结果为：{}", mid);
     }
 
     @Override
     public void sendAck(String deviceId, Object o) {
         String mid = send(deviceId, "ack回复", TmType.SERVICE, TmIdentifierType.ACK.getEnName(), o);
-        log.info("发送后返回的结果为：{}", mid);
+        log.info("发送ack后返回的结果为：{}", mid);
     }
 
     private DeviceInfo infoById(String deviceId){
@@ -185,7 +185,7 @@ public class DeviceInfoSendServiceImpl implements DeviceInfoSendService {
         if (type != TmType.CONFIG && type != TmType.LIFE_TIME && type != TmType.OTA) {
             parseParams(params);
         }
-        RedisUtil.setCacheObject(String.format(RedisKey.MID_NAME, mid), sendName, Duration.ofDays(30));
+        RedisUtil.setCacheObject(String.format(RedisKey.MID_NAME, mid), sendName, Duration.ofDays(1));
         // 设备指令下发
         protocolManager.send(params);
         return params.getMid();

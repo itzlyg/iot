@@ -1,6 +1,5 @@
 package cn.sinozg.applet.biz.product.vo.response;
 
-import cn.sinozg.applet.biz.product.vo.request.table.ProdInfoJsonList;
 import cn.sinozg.applet.common.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Schema(name = "ProdInfoPageResponse", description = "产品消息表 分页返回参数")
-public class ProdInfoPageResponse extends ProdInfoJsonList {
+public class ProdInfoPageResponse {
 
     /** 主键id */
     @Schema(description = "主键id")
@@ -37,9 +36,15 @@ public class ProdInfoPageResponse extends ProdInfoJsonList {
     @Schema(description = "分类ID：用于对物体进行分类")
     private String classifyId;
 
+    @Schema(description = "分类name")
+    private String classifyName;
+
     /** 协议ID：用于关联协议相关信息 */
     @Schema(description = "协议ID：用于关联协议相关信息")
     private String protocolId;
+
+    @Schema(description = "协议Name")
+    private String protocolName;
 
     /** 数据类型枚举：表示物体的类型 */
     @Schema(description = "数据类型枚举：表示物体的类型")
