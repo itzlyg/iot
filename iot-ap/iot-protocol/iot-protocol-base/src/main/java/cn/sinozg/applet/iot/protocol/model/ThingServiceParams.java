@@ -3,8 +3,10 @@ package cn.sinozg.applet.iot.protocol.model;
 import cn.sinozg.applet.biz.com.enums.TmIdentifierType;
 import cn.sinozg.applet.biz.com.enums.TmType;
 import cn.sinozg.applet.common.annotation.EnumField;
+import cn.sinozg.applet.common.utils.JsonUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.apache.tika.utils.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -48,10 +50,15 @@ public class ThingServiceParams<T> {
     @Schema(description = "事件标准符")
     @NotBlank(message = "事件标准符不能为空")
     private String identifier;
+    @NotBlank(message = "指令类型")
+    private String orderTp;
 
     @Schema(description = "具体消息对象 对象 或者 直接要发发送的")
     @NotNull(message = "消息对象不能为空")
     private T params;
+
+    @Schema(description = "保存的发送对象")
+    private String saveParams;
 
     public void setType(String type) {
         this.type = type;
@@ -67,5 +74,12 @@ public class ThingServiceParams<T> {
 
     public void setIdentifier(TmIdentifierType identifier) {
         this.identifier = identifier.getEnName();
+    }
+
+    public String getSaveParams() {
+        if (StringUtils.isBlank(saveParams) && params != null) {
+            return JsonUtil.toJson(params);
+        }
+        return saveParams;
     }
 }

@@ -39,16 +39,13 @@ public class UserInfoUpdateRequest implements Serializable {
     @Schema(description = "用户邮箱")
     @Regex(type = RegexType.EMAIL)
     private String email;
-    /** 校区id */
-    @Schema(description = "校区id")
-    private String campusId;
     /** 部门id */
     @Schema(description = "部门id")
     private String deptId;
 
     /** 手机号码 */
     @Schema(description = "手机号码")
-    private String phoneNumber;
+    private String phoneNum;
 
     @Schema(description = "头像地址")
     private String avatar;
@@ -57,14 +54,6 @@ public class UserInfoUpdateRequest implements Serializable {
     @Schema(description = "用户性别;00男 01女 02未知")
     private String sex;
 
-    /** 帐号状态;00正常 01停用 */
-    @Schema(description = "帐号状态;00正常 01停用")
-    private String dataStatus;
-
     @Schema(description = "角色集合")
     private List<String> roleIds;
-
-    @Schema(description = "备注")
-    private String remark;
-
 }

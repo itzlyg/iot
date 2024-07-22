@@ -11,6 +11,11 @@
 	<name>${project.artifactId}</name>
 	<description>物联网项目-web服务</description>
 
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<maven.install.skip>true</maven.install.skip>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>p6spy</groupId>

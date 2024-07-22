@@ -37,7 +37,7 @@ import java.util.List;
 public class OssQiNiuServiceImpl implements OssService {
 
     @Override
-    public boolean simpleUpload(OssProperties oss, String key, InputStream is) {
+    public boolean simpleUpload(OssProperties oss, String key, String mediaType, InputStream is) {
         return upload(oss, key, is);
     }
 

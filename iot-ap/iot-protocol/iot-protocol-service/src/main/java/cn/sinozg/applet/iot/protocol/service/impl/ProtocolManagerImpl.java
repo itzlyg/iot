@@ -171,9 +171,12 @@ public class ProtocolManagerImpl extends BaseProtocolManagerService {
         messageInfo.setDeviceCode(service.getDeviceCode());
         messageInfo.setIdentifier(service.getIdentifier());
         messageInfo.setType(service.getType());
+        messageInfo.setTime(System.currentTimeMillis());
         messageInfo.setData(service.getParams());
+        messageInfo.setSaveParams(service.getSaveParams());
         messageInfo.setDeviceName(deviceName);
-        behaviourService.reportMessage(messageInfo);
+        messageInfo.setOrderTp(service.getOrderTp());
+        behaviourService.sendCallback(message, messageInfo);
     }
 
     @Override

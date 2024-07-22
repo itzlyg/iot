@@ -10,6 +10,7 @@ import cn.sinozg.applet.common.utils.SnowFlake;
 import cn.sinozg.applet.iot.common.enums.ProtocolTopicType;
 import cn.sinozg.applet.iot.common.utils.ProtocolUtil;
 import cn.sinozg.applet.iot.protocol.model.DeviceAuthInfo;
+import cn.sinozg.applet.iot.protocol.model.DeviceMessageInfo;
 import cn.sinozg.applet.iot.protocol.model.DeviceRegisterInfo;
 import cn.sinozg.applet.iot.protocol.model.DeviceSubRegisterInfo;
 import cn.sinozg.applet.iot.protocol.service.DeviceProtocolDataService;
@@ -134,7 +135,7 @@ public class DeviceBehaviourServiceImpl {
 
             messageInfo.setOccurred(System.currentTimeMillis());
 
-            reportMessage(messageInfo);
+            sendCallback(null, messageInfo);
         }
 
         return device;
@@ -213,13 +214,21 @@ public class DeviceBehaviourServiceImpl {
         messageInfo.setOccurred(System.currentTimeMillis());
 
 
-        reportMessage(messageInfo);
+        sendCallback(null, messageInfo);
     }
 
-    public void reportMessage(TmMessageInfo message) {
+    /**
+     * 上报回调 给业务去写数据
+     * @param message 消息
+     */
+    public void recordCallback (TmMessageInfo message){
+        dataService.recordCallback(message);
+    }
+
+    public void sendCallback(DeviceMessageInfo device, TmMessageInfo message) {
         try {
-            DeviceInfoProtocolResponse device = dataService.deviceInfoKeyCode(message.getProdKey(), message.getDeviceCode(), false);
-            if (device == null) {
+            DeviceInfoProtocolResponse deviceInfo = dataService.deviceInfoKeyCode(message.getProdKey(), message.getDeviceCode(), false);
+            if (deviceInfo == null) {
                 return;
             }
             message.setId(SnowFlake.genId());
@@ -229,9 +238,11 @@ public class DeviceBehaviourServiceImpl {
             if (message.getTime() == null) {
                 message.setTime(System.currentTimeMillis());
             }
-            message.setDeviceCode(device.getDeviceCode());
+            message.setDeviceCode(deviceInfo.getDeviceCode());
             ProtocolUtil.setTenantId(message);
             producer.publish(ProtocolTopicType.THING_MODEL, message);
+            // 上报回调
+            dataService.sendCallback(device, message);
         } catch (Throwable e) {
             log.error("send thing model message error", e);
         }
@@ -242,7 +253,7 @@ public class DeviceBehaviourServiceImpl {
      */
     public void reportMessage(String jsonMsg) {
         TmMessageInfo message = JsonUtil.toPojo(jsonMsg, TmMessageInfo.class);
-        reportMessage(message);
+        sendCallback(null, message);
     }
 
     public void deviceOta(TmMessageInfo message) {

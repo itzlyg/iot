@@ -20,6 +20,7 @@
 		<module>iot-protocol-base</module>
 		<module>iot-protocol-service</module>
 
+
 	</modules>
 
 	<build>

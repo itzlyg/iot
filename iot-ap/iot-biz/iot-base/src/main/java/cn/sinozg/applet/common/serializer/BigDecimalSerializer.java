@@ -18,10 +18,12 @@ public class BigDecimalSerializer extends JsonSerializer<BigDecimal> {
     @Override
     public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         if (value == null) {
-            gen.writeNumber((BigDecimal) null);
+            gen.writeObject(BigDecimal.ZERO);
         } else {
-            BigDecimal bd = value.setScale(2, RoundingMode.HALF_UP);
-            gen.writeNumber(bd);
+            String s = value.stripTrailingZeros().toPlainString();
+            BigDecimal b = new BigDecimal(s);
+            BigDecimal bd = b.setScale(2, RoundingMode.HALF_UP);
+            gen.writeObject(bd);
         }
     }
 }

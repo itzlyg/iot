@@ -3,8 +3,10 @@ package cn.sinozg.applet.biz.com.model;
 import cn.sinozg.applet.biz.com.enums.TmIdentifierType;
 import cn.sinozg.applet.biz.com.enums.TmType;
 import cn.sinozg.applet.common.annotation.EnumField;
+import cn.sinozg.applet.common.utils.JsonUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.apache.tika.utils.StringUtils;
 
 /**
  * 物模型 信息 用来接收消息
@@ -51,6 +53,9 @@ public class TmMessageInfo {
     @Schema(description = "事件标准符，加上\"_reply\"表示 回复")
     private String identifier;
 
+    @Schema(description = "指令类型")
+    private String orderTp;
+
     @Schema(description = "消息状态码")
     private int code;
 
@@ -59,6 +64,9 @@ public class TmMessageInfo {
 
     @Schema(description = "具体消息对象")
     private Object data;
+
+    @Schema(description = "要保存的数据")
+    private String saveParams;
 
     @Schema(description = "时间戳，设备上的事件或数据产生的本地时间")
     private Long occurred;
@@ -81,5 +89,12 @@ public class TmMessageInfo {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getSaveParams() {
+        if (StringUtils.isBlank(saveParams) && data != null) {
+            return JsonUtil.toJson(data);
+        }
+        return saveParams;
     }
 }

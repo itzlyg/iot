@@ -71,7 +71,7 @@ public class FileMappingServiceImpl extends ServiceImpl<FileMappingMapper, FileM
              ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             IOUtils.copy(is, os);
             // 上传文件到oss
-            boolean success = oss.simpleUpload(app.getOss(), mapping.getId(), new ByteArrayInputStream(os.toByteArray()));
+            boolean success = oss.simpleUpload(app.getOss(), mapping.getId(), mapping.getMediaType(), new ByteArrayInputStream(os.toByteArray()));
             if (!success) {
                 throw new CavException("上传文件失败！");
             }

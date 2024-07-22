@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -87,15 +86,12 @@ public class TmMsgSinkServiceImpl implements TmMsgSinkService {
     @Override
     public void add(TmSinkAddRequest params) {
         String sql = String.format(TdSql.TH_ADD, params.getDeviceCode().toLowerCase(), params.getDeviceCode());
-        Object data = params.getData();
-        if (data == null) {
-            data = new HashMap<>(16);
-        }
+        String data = params.getSaveParams();
         String mid = params.getMid();
         String midName = RedisUtil.getCacheObject(String.format(RedisKey.MID_NAME, mid));
         template.update(sql, params.getOccurred(), mid, midName, params.getProdKey(), params.getDeviceName(),
-                params.getUid(), params.getType(), params.getIdentifier(), params.getCode(), JsonUtil.toJson(data),
-                params.getTs());
+                params.getUid(), params.getType(), params.getIdentifier(), params.getOrderTp(), params.getCode(),
+                data, params.getTs());
     }
 
     @Override

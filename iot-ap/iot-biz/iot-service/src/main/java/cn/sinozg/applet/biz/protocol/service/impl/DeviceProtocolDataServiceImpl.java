@@ -26,6 +26,7 @@ import cn.sinozg.applet.common.constant.Constants;
 import cn.sinozg.applet.common.utils.JsonUtil;
 import cn.sinozg.applet.common.utils.PojoUtil;
 import cn.sinozg.applet.iot.protocol.model.DeviceConfigInfo;
+import cn.sinozg.applet.iot.protocol.model.DeviceMessageInfo;
 import cn.sinozg.applet.iot.protocol.service.DeviceProtocolDataService;
 import cn.sinozg.applet.iot.protocol.vo.response.DeviceInfoProtocolResponse;
 import cn.sinozg.applet.iot.protocol.vo.response.DeviceOtaDetailResponse;
@@ -224,6 +225,7 @@ public class DeviceProtocolDataServiceImpl implements DeviceProtocolDataService 
         boolean isReply = TmIdentifierType.isReply(msg.getIdentifier());
         TaskManager update = new TaskManager();
         update.setTaskTransactionId(params.getMid());
+        params.setTs(msg.getTime());
         update.setExecuteStatus(isReply ? Constants.STATUS_03 : Constants.STATUS_02);
         taskManagerMapper.callbackStatus(update);
         tmSinkService.add(params);
@@ -235,5 +237,15 @@ public class DeviceProtocolDataServiceImpl implements DeviceProtocolDataService 
         params.setProdKey(prodKey);
         params.setDeviceCode(deviceCode);
         return deviceInfoService.protocolIdForDevice(params);
+    }
+
+    @Override
+    public void sendCallback(DeviceMessageInfo device, TmMessageInfo msg) {
+
+    }
+
+    @Override
+    public void recordCallback(TmMessageInfo msg) {
+
     }
 }

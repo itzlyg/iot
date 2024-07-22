@@ -28,10 +28,15 @@ public class TmSinkAddRequest {
 
     private String identifier;
 
+    @Schema(description = "指令类型")
+    private String orderTp;
+
     @Schema(description = "消息状态码")
     private int code;
 
     private Object data;
+
+    private String saveParams;
 
     @Schema(description = "时间戳，设备上的事件或数据产生的本地时间")
     private Long occurred;

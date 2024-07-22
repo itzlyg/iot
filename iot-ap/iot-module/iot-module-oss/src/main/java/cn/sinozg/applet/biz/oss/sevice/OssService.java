@@ -20,10 +20,11 @@ public interface OssService {
      * 上传文件到 cdn上
      * @param oss 配置信息
      * @param key key
+     * @param mediaType 文件类型
      * @param is 流
      * @return 是否成功
      */
-    boolean simpleUpload (OssProperties oss, String key, InputStream is);
+    boolean simpleUpload (OssProperties oss, String key, String mediaType, InputStream is);
 
     /**
      * 上传文件到 cdn上

@@ -11,6 +11,11 @@
 	<name>${project.artifactId}</name>
 	<description>物联网项目-业务-基础服务</description>
 
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<maven.install.skip>true</maven.install.skip>
+	</properties>
+
 	<dependencies>
 		<!-- SpringBoot Web容器 -->
 		<dependency>
@@ -86,7 +91,5 @@
 			<groupId>cn.sinozg.applet</groupId>
 			<artifactId>applet-web-boot-starter</artifactId>
 		</dependency>
-
-
     </dependencies>
 </project>

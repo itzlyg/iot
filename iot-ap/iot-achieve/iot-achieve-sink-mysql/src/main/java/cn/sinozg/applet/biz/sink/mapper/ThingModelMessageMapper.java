@@ -1,5 +1,6 @@
 package cn.sinozg.applet.biz.sink.mapper;
 
+import cn.sinozg.applet.biz.com.vo.response.OptimizeTableResponse;
 import cn.sinozg.applet.biz.sink.entity.ThingModelMessage;
 import cn.sinozg.applet.biz.sink.vo.request.TmSinkPageRequest;
 import cn.sinozg.applet.biz.sink.vo.request.TmStaRequest;
@@ -20,6 +21,16 @@ import java.util.List;
 * @since 2024-03-07 16:13:16
 */
 public interface ThingModelMessageMapper extends BaseMapper<ThingModelMessage> {
+
+    /**
+     * 删除日志
+     */
+    long deleteLog(@Param("ymd") String ymd);
+
+    /**
+     * 优化表
+     */
+    List<OptimizeTableResponse> optimizeTable();
 
     List<TmStaResponse> staDetail(@Param("p") TmStaRequest params);
 

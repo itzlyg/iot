@@ -43,11 +43,7 @@ public class UserInfoCreateRequest implements Serializable {
 
     /** 手机号码 */
     @Schema(description = "手机号码")
-    private String phoneNumber;
-
-    /** 校区id */
-    @Schema(description = "校区id")
-    private String campusId;
+    private String phoneNum;
     /** 部门id */
     @Schema(description = "部门id")
     private String deptId;

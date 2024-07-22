@@ -4,8 +4,17 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, prod_key, device_code, device_name, mid, mid_name, uid, type, identifier, code, ts, report_time, data, remark, updated_by, updated_time, created_by, created_time
+        id, prod_key, device_code, device_name, mid, mid_name, uid, type, identifier, order_tp, code, ts, report_time, data, remark, updated_by, updated_time, created_by, created_time
     </sql>
+
+    <delete id="deleteLog">
+        delete from t_sink_thing_model_message where
+         created_time &lt; STR_TO_DATE(concat(#{ymd,jdbcType=VARCHAR}, ' 00:00:00'),'%Y-%m-%d %H:%i:%s') order by created_time asc limit 10000
+    </delete>
+
+    <select id="optimizeTable" resultType="cn.sinozg.applet.biz.com.vo.response.OptimizeTableResponse">
+        optimize table t_sink_thing_model_message
+    </select>
 
     <select id="staDetail" parameterType="cn.sinozg.applet.biz.sink.vo.request.TmStaRequest" resultType="cn.sinozg.applet.biz.sink.vo.response.TmStaResponse">
         select ts dateTime, count(*) as data from(select DATE_FORMAT(fROM_UNIXTIME(m.ts/1000),'%Y-%m-%d %H:00:00') as ts from t_sink_thing_model_message m

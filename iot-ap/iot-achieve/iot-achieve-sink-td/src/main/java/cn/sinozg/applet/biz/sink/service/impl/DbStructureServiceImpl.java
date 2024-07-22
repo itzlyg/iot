@@ -79,6 +79,7 @@ public class DbStructureServiceImpl implements DbStructureService {
                 TdField.string("uid"),
                 TdField.string("type"),
                 TdField.string("identifier"),
+                TdField.string("order_tp"),
                 TdField.other("code", DbDataType.INT),
                 TdField.string("data", 4096),
                 TdField.other("report_time", DbDataType.LONG)),

@@ -186,7 +186,9 @@ public class ProtocolMessageServiceImpl implements ProtocolMessageService {
             //其它消息重新生成唯一MID
             messageInfo.setMid(ProtocolUtil.requestId());
         }
-        protocolManager.behaviourService.reportMessage(messageInfo);
+        // 上报回调
+        protocolManager.behaviourService.recordCallback(messageInfo);
+        protocolManager.behaviourService.sendCallback(null, messageInfo);
     }
 
 

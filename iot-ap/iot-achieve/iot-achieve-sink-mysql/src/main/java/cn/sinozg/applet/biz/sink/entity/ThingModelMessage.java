@@ -77,6 +77,11 @@ public class ThingModelMessage extends BaseEntity {
     @TableField("identifier")
     private String identifier;
 
+    /** 指令类型 */
+    @Schema(description = "指令类型")
+    @TableField("order_tp")
+    private String orderTp;
+
 
     /** 状态码 */
     @Schema(description = "状态码")

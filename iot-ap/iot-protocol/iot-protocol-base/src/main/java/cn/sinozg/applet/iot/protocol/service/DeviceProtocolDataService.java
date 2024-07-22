@@ -4,6 +4,7 @@ import cn.sinozg.applet.biz.com.model.DevicePropertyMappingCache;
 import cn.sinozg.applet.biz.com.model.TmMessageInfo;
 import cn.sinozg.applet.biz.com.vo.response.TmProtocolResponse;
 import cn.sinozg.applet.iot.protocol.model.DeviceConfigInfo;
+import cn.sinozg.applet.iot.protocol.model.DeviceMessageInfo;
 import cn.sinozg.applet.iot.protocol.vo.response.DeviceInfoProtocolResponse;
 import cn.sinozg.applet.iot.protocol.vo.response.DeviceOtaDetailResponse;
 import cn.sinozg.applet.iot.protocol.vo.response.ProductModelProtocolResponse;
@@ -149,4 +150,17 @@ public interface DeviceProtocolDataService {
      * @return 协议组件id
      */
     String protocolId(String key, String deviceCode);
+
+    /**
+     * 发送消息回调 接口 处理业务
+     * @param device 发送的消息
+     * @param msg 上报的消息
+     */
+    void sendCallback (DeviceMessageInfo device, TmMessageInfo msg);
+
+    /**
+     * 回调消息 记录日志
+     * @param msg 上报的消息
+     */
+    void recordCallback (TmMessageInfo msg);
 }

@@ -4,35 +4,24 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>cn.sinozg.applet</groupId>
-		<artifactId>iot-biz</artifactId>
+		<artifactId>iot-achieve</artifactId>
 		<version>${revision}</version>
 	</parent>
-	<artifactId>iot-turbo</artifactId>
+	<artifactId>iot-achieve-oss-ali</artifactId>
 	<name>${project.artifactId}</name>
-	<description>物联网项目-场景联动</description>
+	<description>阿里云实现文件存储方案</description>
 
-	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
-		<maven.install.skip>true</maven.install.skip>
-	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>cn.sinozg.applet</groupId>
-			<artifactId>iot-base</artifactId>
+			<artifactId>iot-module-oss</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>32.1.3-jre</version>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy</artifactId>
-		</dependency>
-
 	</dependencies>
 
 </project>

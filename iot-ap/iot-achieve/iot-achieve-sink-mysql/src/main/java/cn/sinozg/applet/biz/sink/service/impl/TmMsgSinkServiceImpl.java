@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -69,15 +68,12 @@ public class TmMsgSinkServiceImpl implements TmMsgSinkService {
         modelMessage.setUid(params.getUid());
         modelMessage.setType(params.getType());
         modelMessage.setIdentifier(params.getIdentifier());
+        modelMessage.setOrderTp(params.getOrderTp());
         modelMessage.setTs(params.getOccurred());
 
-        Object data = params.getData();
-        if (data == null) {
-            data = new HashMap<>(16);
-        }
         modelMessage.setCode(params.getCode());
         modelMessage.setReportTime(params.getTs());
-        modelMessage.setData(JsonUtil.toJson(data));
+        modelMessage.setData(params.getSaveParams());
 
         thingModelMessageService.save(modelMessage);
     }

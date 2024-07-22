@@ -26,18 +26,20 @@
 		<shade.plugin.version>3.5.3</shade.plugin.version>
 		<maven.compiler.version>3.13.0</maven.compiler.version>
 		<resources.plugin.version>3.3.1</resources.plugin.version>
-		<maven-deploy.version>3.1.1</maven-deploy.version>
-		<maven-jar.version>3.4.1</maven-jar.version>
+		<maven-deploy.version>3.1.2</maven-deploy.version>
+		<maven-jar.version>3.4.2</maven-jar.version>
 
-		<maven.surefire.version>3.2.5</maven.surefire.version>
+		<maven.flatten.version>1.6.0</maven.flatten.version>
+
+		<maven.surefire.version>3.3.1</maven.surefire.version>
 		<springdoc.version>1.8.0</springdoc.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
-		<applet.version>1.0.0-SNAPSHOT</applet.version>
-		<netty.version>4.1.109.Final</netty.version>
+		<applet.version>0.0.5</applet.version>
+		<netty.version>4.1.112.Final</netty.version>
 
 		<p6spy.version>3.9.1</p6spy.version>
 		<knife4j.ui.version>4.5.0</knife4j.ui.version>
-		<qiniu.version>7.15.0</qiniu.version>
+		<qiniu.version>7.15.1</qiniu.version>
 		<beanutils.version>1.9.4</beanutils.version>
 		<okhttp.version>4.12.0</okhttp.version>
 
@@ -47,14 +49,15 @@
 		<rocketmq-spring.version>2.3.0</rocketmq-spring.version>
 		<rocketmq.version>5.2.0</rocketmq.version>
 
-		<vertx.version>4.5.7</vertx.version>
+		<vertx.version>4.5.8</vertx.version>
 		<commons-text.version>1.12.0</commons-text.version>
-		<taos.version>3.2.9</taos.version>
+		<taos.version>3.3.0</taos.version>
 		<protobuf.version>3.25.3</protobuf.version>
 		<groovy.version>3.0.19</groovy.version>
 
 		<googlecode.aviator.version>5.4.1</googlecode.aviator.version>
-		<sa-token.version>1.37.0</sa-token.version>
+		<sa-token.version>1.38.0</sa-token.version>
+		<aliyun-oss.version>3.18.0</aliyun-oss.version>
 	</properties>
 
 	<modules>
@@ -296,6 +299,13 @@
 			</dependency>
 
 			<dependency>
+				<groupId>com.aliyun.oss</groupId>
+				<artifactId>aliyun-sdk-oss</artifactId>
+				<version>${aliyun-oss.version}</version>
+			</dependency>
+
+
+			<dependency>
 				<groupId>cn.sinozg.applet</groupId>
 				<artifactId>iot-open-api</artifactId>
 				<version>${revision}</version>
@@ -378,6 +388,7 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<!-- 将依赖包打入到jar包-->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
@@ -391,6 +402,39 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven-deploy.version}</version>
+				</plugin>
+
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>flatten-maven-plugin</artifactId>
+					<version>${maven.flatten.version}</version>
+					<configuration>
+						<updatePomFile>true</updatePomFile>
+						<flattenMode>resolveCiFriendliesOnly</flattenMode>
+					</configuration>
+					<executions>
+						<execution>
+							<id>flatten</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>flatten</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>flatten.clean</id>
+							<phase>clean</phase>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -427,6 +471,11 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>${maven-jar.version}</version>
+					<configuration>
+						<archive>
+							<addMavenDescriptor>false</addMavenDescriptor>
+						</archive>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

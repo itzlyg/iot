@@ -20,6 +20,11 @@ import java.util.List;
 */
 public interface ThingModelMessageService extends IService<ThingModelMessage> {
 
+    /**
+     * 清理日志
+     */
+    void clearLog ();
+
     List<TmStaResponse> staDetail(TmStaRequest params);
 
     BasePageResponse<List<TmSinkPageResponse>> typeIdentifierPage (PagingRequest paging, TmSinkPageRequest params);

@@ -53,8 +53,8 @@ public class TdSql {
 
 
     /** 物模型 新增  */
-    public static final String TH_ADD = "INSERT INTO t_thing_model_message_%s (ts,mid, mid_name,prod_key,device_name,  uid,type,identifier,code,data,   report_time) " +
-            "USING t_thing_model_message TAGS ('%s') VALUES (?,?,?,?,?,  ?,?,?,?,?   ,?);";
+    public static final String TH_ADD = "INSERT INTO t_thing_model_message_%s (ts,mid, mid_name,prod_key,device_name,  uid,type,identifier,order_tp,code,     data,report_time) " +
+            "USING t_thing_model_message TAGS ('%s') VALUES (?,?,?,?,?,  ?,?,?,?,?   ,?,?);";
 
     /** 物模型 分页总数  */
     public static final String TH_PAGE_COUNT = "select count(*) from t_thing_model_message where device_code=? %s";
