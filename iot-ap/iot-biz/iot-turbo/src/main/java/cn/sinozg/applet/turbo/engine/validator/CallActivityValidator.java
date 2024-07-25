@@ -116,7 +116,8 @@ public class CallActivityValidator extends ElementValidator {
         }
         Map<String, Object> properties = flowElement.getProperties();
         if (!properties.containsKey(CALL_ACTIVITY_FLOW_MODULE_ID)) {
-            return 1; // If no callActivityFlowModuleId is specified, default 1
+            // If no callActivityFlowModuleId is specified, default 1
+            return 1;
         }
         String callActivityFlowModuleId = properties.get(CALL_ACTIVITY_FLOW_MODULE_ID).toString();
         if (flowModuleId2NestLevelCache.containsKey(callActivityFlowModuleId)) {

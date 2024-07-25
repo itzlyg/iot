@@ -136,7 +136,7 @@ public class OssAliServiceImpl implements OssService {
         metadata.setObjectAcl(CannedAccessControlList.PublicRead);
         // 设置上传内容类型
         metadata.setContentType(mediaType);
-        //被下载时网页的缓存行为
+        // 被下载时网页的缓存行为
         metadata.setCacheControl("no-cache");
         PutObjectRequest request = new PutObjectRequest(prop.getBucketName(), keyName, inputStream);
         request.setMetadata(metadata);

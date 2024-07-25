@@ -19,18 +19,15 @@ import cn.sinozg.applet.common.utils.RedisUtil;
 import cn.sinozg.applet.common.utils.SnowFlake;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.Collections;
@@ -56,6 +53,7 @@ public class FileMappingServiceImpl extends ServiceImpl<FileMappingMapper, FileM
     @Resource
     private AppValue app;
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public FileInfoResponse addFile(HttpServletRequest request) {
         FileUploadTempResponse fileInfo = fileInfo(request);
@@ -67,11 +65,9 @@ public class FileMappingServiceImpl extends ServiceImpl<FileMappingMapper, FileM
         String bizId = StringUtils.defaultIfBlank(fileInfo.getBizId(), SnowFlake.genId());
         FileMapping mapping = mapping(f.getOriginalFilename(), bizId, f.getSize());
         FileInfoResponse pic = toResponse(mapping);
-        try (InputStream is = f.getInputStream();
-             ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-            IOUtils.copy(is, os);
+        try (InputStream is = f.getInputStream()) {
             // 上传文件到oss
-            boolean success = oss.simpleUpload(app.getOss(), mapping.getId(), mapping.getMediaType(), new ByteArrayInputStream(os.toByteArray()));
+            boolean success = oss.simpleUpload(app.getOss(), mapping.getId(), mapping.getMediaType(), is);
             if (!success) {
                 throw new CavException("上传文件失败！");
             }

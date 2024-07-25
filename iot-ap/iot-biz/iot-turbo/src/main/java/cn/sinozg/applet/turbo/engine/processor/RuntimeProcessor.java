@@ -377,8 +377,8 @@ public class RuntimeProcessor {
             String flowDeployId = historyNodeInstanceList.get(0).getFlowDeployId();
             Map<String, FlowElement> flowElementMap = getFlowElementMap(flowDeployId);
 
-            //4.pick out userTask and build result
-            List<NodeInstanceMidBo> userTaskList = historyListResult.getNodeInstanceList();//empty list
+            //4.pick out userTask and build result //empty list
+            List<NodeInstanceMidBo> userTaskList = historyListResult.getNodeInstanceList();
 
             for (NodeInstance nodeInstance : historyNodeInstanceList) {
                 //ignore noneffective nodeInstance

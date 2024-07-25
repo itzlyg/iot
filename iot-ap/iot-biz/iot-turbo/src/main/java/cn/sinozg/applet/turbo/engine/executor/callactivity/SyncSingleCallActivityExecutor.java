@@ -142,7 +142,8 @@ public class SyncSingleCallActivityExecutor extends AbstractCallActivityExecutor
 
         // 3.get flowModuleId
         String callActivityFlowModuleId = runtimeContext.getCallActivityFlowModuleId();
-        runtimeContext.setCallActivityFlowModuleId(null); // avoid misuse
+        // avoid misuse
+        runtimeContext.setCallActivityFlowModuleId(null);
         // 4.calculate variables
         List<InstanceDataVo> callActivityVariables = getCallActivityVariables(runtimeContext);
 
@@ -252,7 +253,8 @@ public class SyncSingleCallActivityExecutor extends AbstractCallActivityExecutor
         commitTaskParam.setVariables(InstanceDataUtil.getInstanceDataList(runtimeContext.getInstanceDataMap()));
         // transparent transmission callActivity param
         commitTaskParam.setCallActivityFlowModuleId(runtimeContext.getCallActivityFlowModuleId());
-        runtimeContext.setCallActivityFlowModuleId(null); // avoid misuse
+        // avoid misuse
+        runtimeContext.setCallActivityFlowModuleId(null);
 
         CommitTaskResult commitTaskResult = runtimeProcessor.commit(commitTaskParam);
         LOGGER.info("callActivity commit.||commitTaskParam={}||commitTaskResult={}", commitTaskParam, commitTaskResult);

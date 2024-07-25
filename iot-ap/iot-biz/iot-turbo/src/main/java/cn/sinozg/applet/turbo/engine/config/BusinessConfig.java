@@ -18,9 +18,10 @@ public class BusinessConfig {
 
     @Value("${callActivity.nested.level:#{null}}")
     private String callActivityNestedLevel;
-
-    public static final int COMPUTING_FLOW_NESTED_LEVEL = -1; // computing flow nested level
-    public static final int MIN_FLOW_NESTED_LEVEL = 0; // Flow don't use CallActivity node
+    // computing flow nested level
+    public static final int COMPUTING_FLOW_NESTED_LEVEL = -1;
+    // Flow don't use CallActivity node
+    public static final int MIN_FLOW_NESTED_LEVEL = 0;
     public static final int MAX_FLOW_NESTED_LEVEL = 10;
 
     /**
