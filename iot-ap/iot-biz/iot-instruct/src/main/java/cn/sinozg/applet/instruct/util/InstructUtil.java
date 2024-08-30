@@ -187,7 +187,6 @@ public class InstructUtil {
      * @param data 数据
      * @param d 对应的结构
      * @return 指令
-     * @throws Exception
      */
     private static String encodeField (Field field, Object data, InstructFieldDetail d) {
         String fv = null;

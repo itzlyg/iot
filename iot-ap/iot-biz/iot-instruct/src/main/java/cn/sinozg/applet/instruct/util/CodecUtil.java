@@ -170,7 +170,7 @@ public class CodecUtil {
      * @return 结果
      */
     public static String byteToHex(byte input) {
-        return String.format("%02X", input);
+        return byteToHex(input, 2);
     }
 
     /**

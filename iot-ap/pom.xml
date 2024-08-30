@@ -34,7 +34,7 @@
 		<maven.surefire.version>3.3.1</maven.surefire.version>
 		<springdoc.version>1.8.0</springdoc.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
-		<applet.version>0.0.5</applet.version>
+		<applet.version>0.0.6</applet.version>
 		<netty.version>4.1.112.Final</netty.version>
 
 		<p6spy.version>3.9.1</p6spy.version>
@@ -46,18 +46,18 @@
 		<graalvm.version>21.3.8</graalvm.version>
 		<graalvm.js.version>21.3.8</graalvm.js.version>
 		<luaj.verion>3.0.1</luaj.verion>
-		<rocketmq-spring.version>2.3.0</rocketmq-spring.version>
-		<rocketmq.version>5.2.0</rocketmq.version>
+		<rocketmq-spring.version>2.3.1</rocketmq-spring.version>
+		<rocketmq.version>5.3.0</rocketmq.version>
 
-		<vertx.version>4.5.8</vertx.version>
+		<vertx.version>4.5.9</vertx.version>
 		<commons-text.version>1.12.0</commons-text.version>
 		<taos.version>3.3.0</taos.version>
-		<protobuf.version>3.25.3</protobuf.version>
-		<groovy.version>3.0.19</groovy.version>
+		<protobuf.version>3.25.4</protobuf.version>
+		<groovy.version>3.0.22</groovy.version>
 
-		<googlecode.aviator.version>5.4.1</googlecode.aviator.version>
+		<googlecode.aviator.version>5.4.3</googlecode.aviator.version>
 		<sa-token.version>1.38.0</sa-token.version>
-		<aliyun-oss.version>3.18.0</aliyun-oss.version>
+		<aliyun-oss.version>3.18.1</aliyun-oss.version>
 	</properties>
 
 	<modules>

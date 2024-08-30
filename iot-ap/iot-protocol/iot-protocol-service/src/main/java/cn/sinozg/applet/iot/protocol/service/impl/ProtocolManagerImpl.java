@@ -72,6 +72,7 @@ public class ProtocolManagerImpl extends BaseProtocolManagerService {
             try {
                 analysisService = ProtocolClassLoaderUtil.getConverter(module.getId());
             } catch (Throwable e) {
+                log.error("数据为：{}", JsonUtil.toJson(module));
                 throw new CavException("获取组件脚本消息错误！", e);
             }
         }

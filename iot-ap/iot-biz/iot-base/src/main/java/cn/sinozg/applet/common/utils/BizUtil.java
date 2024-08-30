@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
  * @since 2023-12-12 17:03
  */
 public class BizUtil {
+    /** 参数键对值 正则表达式 */
     private static final Pattern PATTERN = Pattern.compile("([^&=]+)=([^&=]+)");
 
     /**
