@@ -1,7 +1,12 @@
 package cn.sinozg.applet.biz.oss.sevice.impl;
 
 import cn.sinozg.applet.biz.oss.sevice.OssService;
+import cn.sinozg.applet.biz.oss.vo.model.FileUploadInfo;
+import cn.sinozg.applet.biz.oss.vo.response.ChkFileResponse;
+import cn.sinozg.applet.biz.oss.vo.response.UploadUrlsResponse;
 import cn.sinozg.applet.common.properties.OssProperties;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +32,26 @@ public class OssServiceImpl implements OssService {
     @Override
     public boolean simpleUpload(OssProperties oss, String key, File file) {
         return false;
+    }
+
+    @Override
+    public ChkFileResponse chkFileByMd5(String md5) {
+        return null;
+    }
+
+    @Override
+    public UploadUrlsResponse initMultipartUpload(FileUploadInfo fileUploadInfo) {
+        return null;
+    }
+
+    @Override
+    public String mergeMultipartUpload(String md5) {
+        return "";
+    }
+
+    @Override
+    public byte[] downloadMultipartFile(String id, HttpServletRequest request, HttpServletResponse response) {
+        return new byte[0];
     }
 
     @Override

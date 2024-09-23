@@ -1,6 +1,9 @@
 package cn.sinozg.applet.biz.oss.service.impl;
 
 import cn.sinozg.applet.biz.oss.sevice.OssService;
+import cn.sinozg.applet.biz.oss.vo.model.FileUploadInfo;
+import cn.sinozg.applet.biz.oss.vo.response.ChkFileResponse;
+import cn.sinozg.applet.biz.oss.vo.response.UploadUrlsResponse;
 import cn.sinozg.applet.common.exception.CavException;
 import cn.sinozg.applet.common.properties.OssProperties;
 import cn.sinozg.applet.common.utils.FileUtil;
@@ -15,6 +18,8 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
 import com.aliyun.oss.model.StorageClass;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -79,6 +84,26 @@ public class OssAliServiceImpl implements OssService {
             log.error("获取文件流失败", e);
             throw new CavException("上传到oss失败！");
         }
+    }
+
+    @Override
+    public ChkFileResponse chkFileByMd5(String md5) {
+        return null;
+    }
+
+    @Override
+    public UploadUrlsResponse initMultipartUpload(FileUploadInfo fileUploadInfo) {
+        return null;
+    }
+
+    @Override
+    public String mergeMultipartUpload(String md5) {
+        return "";
+    }
+
+    @Override
+    public byte[] downloadMultipartFile(String id, HttpServletRequest request, HttpServletResponse response) {
+        return new byte[0];
     }
 
     @Override
@@ -151,6 +176,6 @@ public class OssAliServiceImpl implements OssService {
      */
     private OSS buildOss(OssProperties prop) {
         return new OSSClientBuilder().build(
-                prop.getEndPoint(), prop.getAccessKeyId(), prop.getAccessKeySecret());
+                prop.getEndPoint(), prop.getAccessKey(), prop.getAccessSecret());
     }
 }

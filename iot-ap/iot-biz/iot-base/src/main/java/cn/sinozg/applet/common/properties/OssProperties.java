@@ -15,9 +15,11 @@ public class OssProperties {
     /** point */
     private String endPoint;
     /** key */
-    private String accessKeyId;
+    private String accessKey;
     /** secret */
-    private String accessKeySecret;
+    private String accessSecret;
     /** 桶名称 */
     private String bucketName;
+    /** 上传密码 */
+    private Integer uploadExpiry;
 }

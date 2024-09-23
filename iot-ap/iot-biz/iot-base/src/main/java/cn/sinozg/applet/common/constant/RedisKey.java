@@ -33,4 +33,8 @@ public class RedisKey extends BaseRedisKeys {
     public static final String  SEQ_NO_DOWN = REDIS_PREFIX + "seq_no_down";
     /** 任务码 */
     public static final String TASK_NO = REDIS_PREFIX + "task_no";
+
+    /** OSS  */
+    public static final String OSS_ID = REDIS_PREFIX + "oss:id:%s";
+    public static final String OSS_MD5 = REDIS_PREFIX + "oss:md5:%s";
 }

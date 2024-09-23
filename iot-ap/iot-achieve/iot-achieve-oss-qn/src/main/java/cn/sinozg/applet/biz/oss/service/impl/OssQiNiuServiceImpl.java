@@ -1,6 +1,9 @@
 package cn.sinozg.applet.biz.oss.service.impl;
 
 import cn.sinozg.applet.biz.oss.sevice.OssService;
+import cn.sinozg.applet.biz.oss.vo.model.FileUploadInfo;
+import cn.sinozg.applet.biz.oss.vo.response.ChkFileResponse;
+import cn.sinozg.applet.biz.oss.vo.response.UploadUrlsResponse;
 import cn.sinozg.applet.common.constant.RedisKey;
 import cn.sinozg.applet.common.exception.CavException;
 import cn.sinozg.applet.common.properties.OssProperties;
@@ -16,6 +19,8 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.BatchStatus;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -46,11 +51,31 @@ public class OssQiNiuServiceImpl implements OssService {
         return upload(oss, key, file);
     }
 
+    @Override
+    public ChkFileResponse chkFileByMd5(String md5) {
+        return null;
+    }
+
+    @Override
+    public UploadUrlsResponse initMultipartUpload(FileUploadInfo fileUploadInfo) {
+        return null;
+    }
+
+    @Override
+    public String mergeMultipartUpload(String md5) {
+        return "";
+    }
+
+    @Override
+    public byte[] downloadMultipartFile(String id, HttpServletRequest request, HttpServletResponse response) {
+        return new byte[0];
+    }
+
 
     @Override
     public void deleteFile(OssProperties oos, List<String> ids) {
         Configuration cfg = new Configuration(Region.autoRegion());
-        Auth auth = Auth.create(oos.getAccessKeyId(), oos.getAccessKeySecret());
+        Auth auth = Auth.create(oos.getAccessKey(), oos.getAccessSecret());
         BucketManager bucketManager = new BucketManager(auth, cfg);
         BucketManager.BatchOperations operations = new BucketManager.BatchOperations();
         // 单次文件不超过1000
@@ -73,7 +98,7 @@ public class OssQiNiuServiceImpl implements OssService {
         String key = String.format(RedisKey.OSS_TOKEN, oos.getBucketName());
         String token = RedisUtil.getCacheObject(key);
         if (StringUtils.isBlank(token)) {
-            Auth auth = Auth.create(oos.getAccessKeyId(), oos.getAccessKeySecret());
+            Auth auth = Auth.create(oos.getAccessKey(), oos.getAccessSecret());
             token = auth.uploadToken(oos.getBucketName());
             RedisUtil.setCacheObject(key, token, Duration.ofSeconds(3600));
         }

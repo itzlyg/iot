@@ -19,6 +19,7 @@
 	<modules>
 		<module>iot-achieve-oss-qn</module>
 		<module>iot-achieve-oss-ali</module>
+		<module>iot-achieve-oss-minio</module>
 		<module>iot-achieve-rocket-mq</module>
 		<module>iot-achieve-sink-td</module>
 		<module>iot-achieve-sink-mysql</module>
