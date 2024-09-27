@@ -130,10 +130,24 @@ public class InstructUtil {
      */
     private static Object decodeField (String instruct, Field field, InstructFieldDetail d){
         String s = StringUtils.substring(instruct, d.getBegin(), d.getBegin() + TWO * d.getBs());
+        return decode(s, field, d);
+    }
+
+    /**
+     * 解码数据
+     * @param s 字符
+     * @param field 早点
+     * @param d 想去
+     * @return 最后的数据
+     */
+    public static Object decode(String s, Field field, InstructFieldDetail d){
         if (d.isRevert()) {
             s = CodecUtil.revertStrLen2(s);
         }
         Object v = s;
+        if (d.isRevert()) {
+            v = CodecUtil.revertStrLen2(s);
+        }
         // 时间
         if (field.getType() == LocalDateTime.class) {
             v = CodecUtil.ldtTime(s, d.getPattern());
@@ -210,7 +224,17 @@ public class InstructUtil {
         if (fv == null) {
             fv = CodecUtil.leftPad(String.valueOf(data), d.getBs());
         }
-
+        int[] hexToBinInt = d.getHexToBinInt();
+        if (ArrayUtils.isNotEmpty(hexToBinInt)) {
+            Integer[] binInt = PojoUtil.cast(data);
+            StringBuilder bin = new StringBuilder();
+            // 反转
+            for (int i = 0; i < hexToBinInt.length; i++) {
+                bin.insert(0, CodecUtil.intToBin(binInt[i], hexToBinInt[i]));
+            }
+            fv = CodecUtil.binaryToHex(bin.toString());
+        }
+        // log.info("{}[{}]", d.getField().getName(), fv);
         return fv;
     }
 

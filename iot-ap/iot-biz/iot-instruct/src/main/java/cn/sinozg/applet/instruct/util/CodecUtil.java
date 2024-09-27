@@ -110,6 +110,17 @@ public class CodecUtil {
     }
 
     /**
+     * 十进制转二进制
+     * @param input 值
+     * @param len 长度
+     * @return 值
+     */
+    public static String intToBin(int input, int len){
+        String bin = Integer.toBinaryString(input);
+        return CodecUtil.leftPad(bin, len);
+    }
+
+    /**
      * 十六进制转浮点
      * @param input 十六进制
      * @return 浮点
@@ -162,6 +173,16 @@ public class CodecUtil {
         return leftPad(Integer.toBinaryString(t), bs * 8);
     }
 
+    /**
+     * 二进制转为十六进制
+     * @param binary 二进制
+     * @return 十六进制
+     */
+    public static String binaryToHex(String binary){
+        int t = Integer.parseInt(binary, TWO);
+        return Integer.toHexString(t);
+    }
+
 
     /**
      * 转换为2Byte 16进制字符
@@ -170,7 +191,7 @@ public class CodecUtil {
      * @return 结果
      */
     public static String byteToHex(byte input) {
-        return byteToHex(input, 2);
+        return byteToHex(input, TWO);
     }
 
     /**
