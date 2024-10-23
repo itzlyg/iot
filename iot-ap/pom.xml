@@ -16,7 +16,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<revision>0.0.1-SNAPSHOT</revision>
+		<revision>0.0.1</revision>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<java.version>1.8</java.version>
@@ -34,8 +34,8 @@
 		<maven.surefire.version>3.3.1</maven.surefire.version>
 		<springdoc.version>1.8.0</springdoc.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
-		<applet.version>0.0.6</applet.version>
-		<netty.version>4.1.112.Final</netty.version>
+		<applet.version>0.0.8</applet.version>
+		<netty.version>4.1.114.Final</netty.version>
 
 		<p6spy.version>3.9.1</p6spy.version>
 		<knife4j.ui.version>4.5.0</knife4j.ui.version>
@@ -49,14 +49,14 @@
 		<rocketmq-spring.version>2.3.1</rocketmq-spring.version>
 		<rocketmq.version>5.3.0</rocketmq.version>
 
-		<vertx.version>4.5.9</vertx.version>
+		<vertx.version>4.5.10</vertx.version>
 		<commons-text.version>1.12.0</commons-text.version>
 		<taos.version>3.3.0</taos.version>
 		<protobuf.version>3.25.4</protobuf.version>
 		<groovy.version>3.0.22</groovy.version>
 
 		<googlecode.aviator.version>5.4.3</googlecode.aviator.version>
-		<sa-token.version>1.38.0</sa-token.version>
+		<sa-token.version>1.39.0</sa-token.version>
 		<aliyun-oss.version>3.18.1</aliyun-oss.version>
 		<minio-oss.version>8.5.12</minio-oss.version>
 	</properties>
@@ -98,6 +98,12 @@
 			<dependency>
 				<groupId>cn.sinozg.applet</groupId>
 				<artifactId>applet-annotation</artifactId>
+				<version>${applet.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cn.sinozg.applet</groupId>
+				<artifactId>applet-instruct</artifactId>
 				<version>${applet.version}</version>
 			</dependency>
 

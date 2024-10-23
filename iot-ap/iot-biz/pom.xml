@@ -18,7 +18,6 @@
 
 	<modules>
 		<module>iot-base</module>
-		<module>iot-instruct</module>
 		<module>iot-turbo</module>
 		<module>iot-service</module>
 		<module>iot-open-api</module>
