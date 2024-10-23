@@ -4,7 +4,7 @@
 </p>
 
 ##  简介
-本项目是一个基于`Java``Vue`开发的物联网基础平台，可以快速实现硬件设备接入。
+本项目是一个基于`Java` `Vue`开发的物联网基础平台，可以快速实现硬件设备接入。
 
 * Java 后端：`master` 分支为 JDK 8 + Spring Boot 2.7.18
 * 管理后台的电脑端：Vue2 提供 `element-ui` 版本
@@ -89,6 +89,9 @@
 
 帐号/密码：
 `18812345678` `Io@t0315Jb!`
+
+
+<img src="https://img.shields.io/badge/phone-18126249448-green.svg" alt="Downloads">
 
 **如有疑问或者需要源码的可以随时联系：**
 
