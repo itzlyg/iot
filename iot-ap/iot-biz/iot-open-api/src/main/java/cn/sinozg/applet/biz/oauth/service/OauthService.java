@@ -1,8 +1,7 @@
 package cn.sinozg.applet.biz.oauth.service;
 
+import cn.dev33.satoken.oauth2.function.SaOAuth2DoLoginHandleFunction;
 import cn.sinozg.applet.biz.oauth.vo.response.OauthTokenResponse;
-
-import java.util.function.BiFunction;
 
 /**
  * @author xieyubin
@@ -16,7 +15,7 @@ public interface OauthService {
      * 秘密模式登录
      * @return 结果
      */
-    BiFunction<String, String, Object> oauth2Password();
+    SaOAuth2DoLoginHandleFunction oauth2Password();
 
     /**
      * 获取token 或者刷新token

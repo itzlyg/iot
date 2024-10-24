@@ -1,22 +1,26 @@
 package cn.sinozg.applet.biz.oauth.service.impl;
 
-import cn.dev33.satoken.oauth2.logic.SaOAuth2Consts;
-import cn.dev33.satoken.oauth2.model.SaClientModel;
+import cn.dev33.satoken.oauth2.consts.GrantType;
+import cn.dev33.satoken.oauth2.data.model.loader.SaClientModel;
 import cn.sinozg.applet.biz.oauth.entity.OauthClient;
 import cn.sinozg.applet.biz.oauth.mapper.OauthClientMapper;
 import cn.sinozg.applet.biz.oauth.service.OauthClientService;
+import cn.sinozg.applet.common.constant.Constants;
 import cn.sinozg.applet.common.constant.RedisKey;
 import cn.sinozg.applet.common.exception.CavException;
 import cn.sinozg.applet.common.utils.PojoUtil;
 import cn.sinozg.applet.common.utils.RedisUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.time.Duration;
-import java.util.List;
 
 /**
 * 授权客户端 服务实现类
@@ -32,21 +36,27 @@ public class OauthClientServiceImpl extends ServiceImpl<OauthClientMapper, Oauth
     private OauthClientMapper mapper;
 
     @Override
-    public SaClientModel clientModel(String clientId) {
-        OauthClient c = clientCache(clientId);
-        SaClientModel clientModel = new SaClientModel()
-                .setClientId(c.getClientId())
-                .setClientSecret(c.getClientSecret())
-                .setAllowUrl(c.getAllowUrl())
-                .setAccessTokenTimeout(c.getAccessTokenTimeout())
-                .setRefreshTokenTimeout(c.getRefreshTokenTimeout())
-                .setContractScope(c.getScopes());
-        if (StringUtils.contains(c.getMode(), SaOAuth2Consts.GrantType.password)) {
-            clientModel.setIsPassword(true);
-        } else if (StringUtils.contains(c.getMode(), SaOAuth2Consts.GrantType.authorization_code)) {
-            clientModel.setIsCode(true);
+    public List<SaClientModel> clientModel() {
+        List<OauthClient> list = allClient();
+        List<SaClientModel> model = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (OauthClient c : list) {
+                SaClientModel clientModel = new SaClientModel()
+                        .setClientId(c.getClientId())
+                        .setClientSecret(c.getClientSecret())
+                        .addAllowRedirectUris(c.getAllowUrl())
+                        .setAccessTokenTimeout(c.getAccessTokenTimeout())
+                        .setRefreshTokenTimeout(c.getRefreshTokenTimeout())
+                        .addContractScopes(c.getScopes());
+                if (StringUtils.contains(c.getMode(), GrantType.password)) {
+                    clientModel.addAllowGrantTypes(GrantType.password);
+                } else if (StringUtils.contains(c.getMode(), GrantType.client_credentials)) {
+                    clientModel.addAllowGrantTypes(GrantType.client_credentials);
+                }
+                model.add(clientModel);
+            }
         }
-        return clientModel;
+        return model;
     }
 
     @Override
@@ -78,5 +88,22 @@ public class OauthClientServiceImpl extends ServiceImpl<OauthClientMapper, Oauth
             return client;
         }
         throw new CavException("客户端信息{}不存在！", clientId);
+    }
+
+    private List<OauthClient> allClient (){
+        String redisKye = String.format(RedisKey.OAUTH_CLIENT, Constants.ALL);
+        Collection<String> keys = RedisUtil.keys(redisKye);
+        List<OauthClient> list;
+        if (CollectionUtils.isNotEmpty(keys)) {
+            list = RedisUtil.cacheByPipelined(new ArrayList<>(keys));
+        } else {
+            list = this.list();
+            if (CollectionUtils.isEmpty(list)) {
+                throw new CavException("客户端信息不存在！");
+            }
+            Map<String, OauthClient> map = PojoUtil.toMap(list, OauthClient::getClientId);
+            RedisUtil.setCacheObjectBatch(map, cid -> String.format(RedisKey.OAUTH_CLIENT, cid), Duration.ofDays(1));
+        }
+        return list;
     }
 }

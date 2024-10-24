@@ -1,8 +1,9 @@
 package cn.sinozg.applet.biz.oauth.service;
 
-import cn.dev33.satoken.oauth2.model.SaClientModel;
+import cn.dev33.satoken.oauth2.data.model.loader.SaClientModel;
 import cn.sinozg.applet.biz.oauth.entity.OauthClient;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
 * 授权客户端 服务类
@@ -15,10 +16,9 @@ public interface OauthClientService extends IService<OauthClient> {
 
     /**
      * 获取 客户端
-     * @param clientId clientId
      * @return 客户端信息
      */
-    SaClientModel clientModel(String clientId);
+    List<SaClientModel> clientModel();
 
     /**
      * 根据客户端信息获取到 绑定用户

@@ -2,9 +2,10 @@ package cn.sinozg.applet.biz.oauth.service.impl;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaRequest;
-import cn.dev33.satoken.oauth2.logic.SaOAuth2Consts;
-import cn.dev33.satoken.oauth2.logic.SaOAuth2Util;
-import cn.dev33.satoken.oauth2.model.SaClientModel;
+import cn.dev33.satoken.oauth2.consts.SaOAuth2Consts;
+import cn.dev33.satoken.oauth2.data.model.loader.SaClientModel;
+import cn.dev33.satoken.oauth2.function.SaOAuth2DoLoginHandleFunction;
+import cn.dev33.satoken.oauth2.template.SaOAuth2Util;
 import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
@@ -18,15 +19,13 @@ import cn.sinozg.applet.common.exception.CavException;
 import cn.sinozg.applet.common.utils.HttpUtil;
 import cn.sinozg.applet.common.utils.JsonUtil;
 import cn.sinozg.applet.common.utils.PojoUtil;
+import java.util.Map;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.Map;
-import java.util.function.BiFunction;
 
 /**
  * @author xieyubin
@@ -46,7 +45,7 @@ public class OauthServiceImpl implements OauthService {
     private OauthClientService oauthClientService;
 
     @Override
-    public BiFunction<String, String, Object> oauth2Password() {
+    public SaOAuth2DoLoginHandleFunction oauth2Password() {
         return (u, p) -> {
             SaRequest request = SaHolder.getRequest();
             Map<String, String> map = request.getParamMap();
