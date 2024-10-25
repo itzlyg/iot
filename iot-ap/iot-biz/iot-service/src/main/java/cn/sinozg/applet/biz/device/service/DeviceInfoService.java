@@ -12,9 +12,8 @@ import cn.sinozg.applet.common.core.base.BasePageResponse;
 import cn.sinozg.applet.common.core.base.PagingRequest;
 import cn.sinozg.applet.iot.protocol.vo.response.DeviceInfoProtocolResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.List;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**
 * 设备信息表 服务类
@@ -75,5 +74,5 @@ public interface DeviceInfoService extends IService<DeviceInfo> {
      * @param funId 功能id
      * @return 功能信息
      */
-    Pair<DeviceInfo, FunctionElement> functionInfo (String prodKey, String deviceCode, String funId);
+    ImmutablePair<DeviceInfo, FunctionElement> functionInfo (String prodKey, String deviceCode, String funId);
 }

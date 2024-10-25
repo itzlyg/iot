@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -160,7 +160,7 @@ public class OssMinioServiceImpl implements OssService {
         StatObjectResponse stat = minioHelper.statObject(fileId.getObjKey());
         long fileSize = stat.size();
         // 开始下载位置  结束下载位置
-        Pair<Long, Long> rangePair = rangInfo(range, fileSize);
+        ImmutablePair<Long, Long> rangePair = rangInfo(range, fileSize);
         long startByte = rangePair.getKey();
         long endByte = rangePair.getValue();
         // 要下载的长度 确保返回的 contentLength 不会超过文件的实际剩余大小
@@ -223,7 +223,7 @@ public class OssMinioServiceImpl implements OssService {
      * @param fileSize 大小
      * @return 开始和结束
      */
-    private Pair<Long, Long> rangInfo(String range, long fileSize){
+    private ImmutablePair<Long, Long> rangInfo(String range, long fileSize){
         // 开始下载位置
         long startByte = 0;
         // 结束下载位置
@@ -248,7 +248,7 @@ public class OssMinioServiceImpl implements OssService {
                 }
             }
         }
-        return Pair.of(startByte, endByte);
+        return ImmutablePair.of(startByte, endByte);
     }
 
 

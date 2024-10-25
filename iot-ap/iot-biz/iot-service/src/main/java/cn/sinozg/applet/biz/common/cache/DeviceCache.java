@@ -4,13 +4,12 @@ import cn.sinozg.applet.biz.com.model.DevicePropertyMappingCache;
 import cn.sinozg.applet.biz.sink.service.DevicePropertySinkService;
 import cn.sinozg.applet.common.constant.RedisKey;
 import cn.sinozg.applet.common.utils.RedisUtil;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author xieyubin

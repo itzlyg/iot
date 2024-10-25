@@ -8,13 +8,12 @@ import cn.sinozg.applet.biz.open.service.OutDeviceService;
 import cn.sinozg.applet.biz.open.vo.request.FunctionExecuteRequest;
 import cn.sinozg.applet.biz.task.vo.request.param.TaskFunctionParamRequest;
 import cn.sinozg.applet.common.exception.CavException;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.stereotype.Service;
 
 /**
  * @author xieyubin
@@ -34,7 +33,7 @@ public class OutDeviceServiceImpl implements OutDeviceService {
     @Override
     public void functionExecute(FunctionExecuteRequest request) {
         // 查询功能
-        Pair<DeviceInfo, FunctionElement> pair = deviceInfoService.functionInfo(request.getProdKey(), request.getDeviceCode(), request.getFunctionId());
+        ImmutablePair<DeviceInfo, FunctionElement> pair = deviceInfoService.functionInfo(request.getProdKey(), request.getDeviceCode(), request.getFunctionId());
         if (pair == null) {
             throw new CavException("设备功能不存在！");
         }

@@ -26,17 +26,16 @@ import cn.sinozg.applet.common.utils.PojoUtil;
 import cn.sinozg.applet.iot.protocol.vo.response.DeviceInfoProtocolResponse;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
 * 设备信息表 服务实现类
@@ -157,7 +156,7 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
      * @return 功能信息
      */
     @Override
-    public Pair<DeviceInfo, FunctionElement> functionInfo (String prodKey, String deviceCode, String funId){
+    public ImmutablePair<DeviceInfo, FunctionElement> functionInfo (String prodKey, String deviceCode, String funId){
         List<DeviceInfo> list = this.list(new LambdaQueryWrapper<DeviceInfo>().eq(DeviceInfo::getDeviceCode, deviceCode)
                 .eq(DeviceInfo::getProdKey, prodKey));
         if (PojoUtil.single(list)) {
@@ -166,7 +165,7 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
             if (CollectionUtils.isNotEmpty(functions)) {
                 for (FunctionTable fun : functions) {
                     if (funId.equals(fun.getIdentifier())) {
-                        return Pair.of(list.get(0), PojoUtil.copyBean(fun, FunctionElement.class));
+                        return ImmutablePair.of(list.get(0), PojoUtil.copyBean(fun, FunctionElement.class));
                     }
                 }
             }
