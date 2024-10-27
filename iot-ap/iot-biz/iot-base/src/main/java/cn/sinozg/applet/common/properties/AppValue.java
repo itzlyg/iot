@@ -33,6 +33,7 @@ public class AppValue {
     /** 租户 */
     private TenantValue tenant;
 
+    private CrtValue crt;
     /** 参数签名 */
     private SignValue sign;
     /** 文件存储 */
