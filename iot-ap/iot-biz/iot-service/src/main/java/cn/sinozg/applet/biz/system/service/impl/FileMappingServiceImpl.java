@@ -19,6 +19,7 @@ import cn.sinozg.applet.common.utils.RedisUtil;
 import cn.sinozg.applet.common.utils.SnowFlake;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections4.CollectionUtils;
@@ -126,11 +127,9 @@ public class FileMappingServiceImpl extends ServiceImpl<FileMappingMapper, FileM
         if (CollectionUtils.isEmpty(list)) {
             throw new CavException("文件不存在！");
         }
-        List<String> ids = PojoUtil.toList(list, FileMapping::getId);
-        PojoUtil.executeBatch(ids, c -> {
-            oss.deleteFile(app.getOss(), c);
-            this.removeBatchByIds(c);
-        });
+        Map<String, List<String>> idMap = PojoUtil.groupMapList(list, FileMapping::getBucketName, FileMapping::getId);
+        oss.deleteFiles(app.getOss(), idMap);
+        this.remove(query);
         return true;
     }
 

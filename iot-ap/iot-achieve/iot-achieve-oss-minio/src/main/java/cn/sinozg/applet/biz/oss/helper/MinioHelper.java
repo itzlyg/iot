@@ -17,12 +17,16 @@ import io.minio.ListPartsResponse;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.RemoveObjectsArgs;
 import io.minio.StatObjectArgs;
 import io.minio.StatObjectResponse;
 import io.minio.http.Method;
+import io.minio.messages.DeleteObject;
 import io.minio.messages.Part;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,19 +160,50 @@ public class MinioHelper {
      * @return etag
      */
     public String smallUpload(InputStream is, String object, String bucketName, String contentType) {
-        try {
-            ObjectWriteResponse response = minioClient.putObject(PutObjectArgs.builder()
+        ObjectWriteResponse response = execute(c -> c.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(object)
+                .contentType(contentType)
+                .stream(is, is.available(), -1)
+                .build()));
+        String etag = response.etag();
+        log.info("上传文件成功！{}", etag);
+        return etag;
+    }
+
+    public void deleteFile (String bucketName, String id){
+        execute(c -> {
+            c.removeObject(RemoveObjectArgs.builder()
                     .bucket(bucketName)
-                    .object(object)
-                    .contentType(contentType)
-                    .stream(is, is.available(), -1)
-                    .build());
-            String etag = response.etag();
-            log.info("上传文件成功！{}", etag);
-            return etag;
+                    .object(id).build());
+            return null;
+        });
+    }
+
+    public void deleteObjects(Map<String, List<String>> map) {
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Collection<DeleteObject> objects = new ArrayList<>();
+            entry.getValue().forEach(id-> objects.add(new DeleteObject(key)));
+            execute(c -> c.removeObjects(RemoveObjectsArgs.builder()
+                    .bucket(key)
+                    .objects(objects)
+                    .build()));
+        }
+    }
+
+    /**
+     * 操作minio
+     * @param function 函数
+     * @return 执行结果
+     * @param <R> 类型
+     */
+    private <R> R execute (FunctionException<MinioClient, R> function){
+        try {
+            return function.apply(minioClient);
         } catch (Exception e) {
-            log.error("上传文件至 minio 错误", e);
-            throw new CavException("上传文件至 minio 错误！");
+            log.error("minio操作文件错误", e);
+            throw new CavException("minio操作文件错误！");
         }
     }
 

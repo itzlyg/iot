@@ -18,20 +18,21 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
 import com.aliyun.oss.model.StorageClass;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
+import com.aliyun.oss.model.VoidResult;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 阿里云上传文件
@@ -107,16 +108,27 @@ public class OssAliServiceImpl implements OssService {
     }
 
     @Override
-    public void deleteFile(OssProperties oss, List<String> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
+    public void deleteFile(OssProperties oss, String bucketName, String id) {
+        execute(f -> {
+            VoidResult result = f.deleteObject(bucketName, id);
+            log.info("删除文件成功，删除文件 请求id {}", result.getRequestId());
+            return result.getRequestId();
+        }, oss);
+    }
+
+    @Override
+    public void deleteFiles(OssProperties oss, Map<String, List<String>> map) {
+        if (MapUtils.isEmpty(map)) {
             return;
         }
-        execute(f -> {
-            DeleteObjectsResult deleteObjectsResult = f.deleteObjects(new DeleteObjectsRequest(oss.getBucketName()).withKeys(ids).withEncodingType("url"));
-            List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
-            log.info("删除文件成功，删除文件数量 {}", deletedObjects.size());
-            return deletedObjects.size();
-        }, oss);
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            execute(f -> {
+                DeleteObjectsResult deleteObjectsResult = f.deleteObjects(new DeleteObjectsRequest(entry.getKey()).withKeys(entry.getValue()).withEncodingType("url"));
+                List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
+                log.info("批量删除文件成功，删除文件数量 {}", deletedObjects.size());
+                return deletedObjects.size();
+            }, oss);
+        }
     }
 
     @Override

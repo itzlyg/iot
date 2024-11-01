@@ -5,6 +5,7 @@ import cn.sinozg.applet.biz.oss.vo.model.FileUploadInfo;
 import cn.sinozg.applet.biz.oss.vo.response.ChkFileResponse;
 import cn.sinozg.applet.biz.oss.vo.response.UploadUrlsResponse;
 import cn.sinozg.applet.common.properties.OssProperties;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
@@ -46,7 +47,7 @@ public class OssServiceImpl implements OssService {
 
     @Override
     public String mergeMultipartUpload(String md5) {
-        return "";
+        return null;
     }
 
     @Override
@@ -55,12 +56,16 @@ public class OssServiceImpl implements OssService {
     }
 
     @Override
-    public void deleteFile(OssProperties oss, List<String> ids) {
-
+    public void deleteFile(OssProperties oss, String bucketName, String id) {
     }
 
     @Override
+    public void deleteFiles(OssProperties oss, Map<String, List<String>> map) {
+    }
+
+
+    @Override
     public String upToken(OssProperties oss) {
-        return "";
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import cn.sinozg.applet.common.properties.OssProperties;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,11 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 public interface OssService {
 
     /**
-     * 上传文件到 cdn上
+     * 上传文件到 OSS 上 文件流
      * @param oss 配置信息
      * @param key key
      * @param mediaType 文件类型
-     * @param is 流
+     * @param is 流 文件流未关闭
      * @return 是否成功
      */
     boolean simpleUpload (OssProperties oss, String key, String mediaType, InputStream is);
@@ -72,10 +73,18 @@ public interface OssService {
 
     /**
      * 批量删除文件
-     * @param oss 配置信息
-     * @param ids 文件id集合
+     * @param oss 配置
+     * @param bucketName 桶名称
+     * @param id 文件id
      */
-    void deleteFile (OssProperties oss, List<String> ids);
+    void deleteFile (OssProperties oss, String bucketName, String id);
+
+    /**
+     * 批量删除文件
+     * @param oss 配置
+     * @param map bucketName - idList
+     */
+    void deleteFiles (OssProperties oss, Map<String, List<String>> map);
 
     /**
      * 获取到token

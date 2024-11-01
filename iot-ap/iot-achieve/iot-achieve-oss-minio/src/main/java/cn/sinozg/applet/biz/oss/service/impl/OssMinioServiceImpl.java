@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -206,10 +207,14 @@ public class OssMinioServiceImpl implements OssService {
         }
     }
 
+    @Override
+    public void deleteFile(OssProperties oss, String bucketName, String id) {
+        minioHelper.deleteFile(bucketName, id);
+    }
 
     @Override
-    public void deleteFile(OssProperties oos, List<String> ids) {
-
+    public void deleteFiles(OssProperties oss, Map<String, List<String>> map) {
+        minioHelper.deleteObjects(map);
     }
 
     @Override
