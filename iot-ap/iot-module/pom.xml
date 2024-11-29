@@ -19,6 +19,7 @@
 	<modules>
 		<module>iot-module-oss</module>
 		<module>iot-module-sink</module>
+		<module>iot-module-notify</module>
 	</modules>
 
 	<build>
