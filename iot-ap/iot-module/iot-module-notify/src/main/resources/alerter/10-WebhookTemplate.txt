@@ -1,0 +1,17 @@
+{
+  "alarmId": ${alarmId},
+  "target": "${target}",
+  "priority": ${priority},
+  "content": "${content}",
+  "status": ${status},
+  "times": ${alerterTimes},
+  "triggerTime": "${triggerTime}",
+  <#if (restoreTime??)>"restoreTime": "${restoreTime}",</#if>
+  <#if (tags??)>
+  "tags": {
+    <#list tags as key,value>
+    "${key}": "${value}",
+    </#list>
+  }
+  </#if>
+}
