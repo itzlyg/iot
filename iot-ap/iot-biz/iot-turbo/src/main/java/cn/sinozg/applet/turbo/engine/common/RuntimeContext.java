@@ -25,9 +25,12 @@ public class RuntimeContext {
     //2.1 flowInstance info
     private String flowInstanceId;
     private int flowInstanceStatus;
-    private NodeInstanceBo suspendNodeInstance; //point to the userTaskInstance to commit/rollback
-    private List<NodeInstanceBo> nodeInstanceList;  //processed nodeInstance list
-    private Stack<String> suspendNodeInstanceStack; // suspendNodeInstance Stack: commitNode > ... > currentNode
+    //point to the userTaskInstance to commit/rollback
+    private NodeInstanceBo suspendNodeInstance;
+    //processed nodeInstance list
+    private List<NodeInstanceBo> nodeInstanceList;
+    // suspendNodeInstance Stack: commitNode > ... > currentNode
+    private Stack<String> suspendNodeInstanceStack;
 
     //2.2 current info
     private FlowElement currentNodeModel;
@@ -41,8 +44,10 @@ public class RuntimeContext {
     private int processStatus;
 
     //2.5 transparent transmission field
-    private String callActivityFlowModuleId; // from top to bottom transmit callActivityFlowModuleId
-    private List<RuntimeResult> callActivityRuntimeResultList; // from bottom to top transmit callActivityRuntimeResultList
+    // from top to bottom transmit callActivityFlowModuleId
+    private String callActivityFlowModuleId;
+    // from bottom to top transmit callActivityRuntimeResultList
+    private List<RuntimeResult> callActivityRuntimeResultList;
 
     public RuntimeContext getParentRuntimeContext() {
         return parentRuntimeContext;
