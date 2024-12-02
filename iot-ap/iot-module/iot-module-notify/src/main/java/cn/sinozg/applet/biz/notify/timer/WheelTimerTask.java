@@ -43,7 +43,6 @@ public class WheelTimerTask implements TimerTask {
         config = PojoUtil.toList(config, null, c -> {
             // decode password
             if (c.getType() == AlerterContext.PARAM_TYPE_PASSWORD && c.getValue() != null) {
-                // TODO
                 String decodeValue = CypherUtil.encoder(String.valueOf(c.getValue()));
                 if (decodeValue == null) {
                     log.error("Aes Decode value {} error.", c.getValue());

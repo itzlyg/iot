@@ -7,11 +7,9 @@ import cn.sinozg.applet.biz.notify.service.AlerterDataQueueService;
 import cn.sinozg.applet.biz.notify.service.AlerterDataService;
 import cn.sinozg.applet.biz.notify.timer.AlerterTask;
 import cn.sinozg.applet.biz.notify.util.AlerterThread;
-import cn.sinozg.applet.common.constant.BaseConstants;
 import cn.sinozg.applet.common.service.FrameworkInitRunService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +19,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 初始化 静态资源
@@ -39,6 +39,8 @@ public class NotifierAlerterInitServiceImpl implements FrameworkInitRunService {
 
     @Resource
     private AlerterDataQueueService dataQueueService;
+
+    private static final Pattern FILE_NAME_PATTERN = Pattern.compile("[0-9]+-[a-zA-Z]+.[a-zA-Z]+");
 
     @Override
     public void initInfo() {
@@ -65,25 +67,20 @@ public class NotifierAlerterInitServiceImpl implements FrameworkInitRunService {
             List<NotifierTemplateInfo> list = new ArrayList<>();
             for (org.springframework.core.io.Resource resource : resources) {
                 String fileName = resource.getFilename();
-                if (resource.getFilename() == null) {
+                if (fileName == null) {
                     log.warn("Ignore the template file {}.", resource.getFilename());
+                    continue;
+                }
+                Matcher m = FILE_NAME_PATTERN.matcher(fileName);
+                if (!m.find()) {
+                    log.warn("模板文件名称不符合格式 {}.", fileName);
                     continue;
                 }
                 try (InputStream inputStream = resource.getInputStream()) {
                     String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                     NotifierTemplateInfo template = new NotifierTemplateInfo();
-                    String name = StringUtils.substringBeforeLast(fileName, BaseConstants.SPOT);
-                    if (StringUtils.isBlank(name)) {
-                        log.warn("模板文件名称不符合格式 {}.", fileName);
-                        continue;
-                    }
-                    String[] names = name.split(BaseConstants.MIDDLE_LINE);
-                    if (names.length != 2) {
-                        log.warn("模板文件名称不符合格式 {}.", fileName);
-                        continue;
-                    }
-                    template.setName(names[1]);
-                    template.setType(names[0]);
+                    template.setName(m.group(2));
+                    template.setType(m.group(1));
                     template.setPreset(true);
                     template.setContent(content);
                     list.add(template);

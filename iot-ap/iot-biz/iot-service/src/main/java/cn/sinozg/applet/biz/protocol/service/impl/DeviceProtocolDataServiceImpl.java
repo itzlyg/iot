@@ -5,7 +5,7 @@ import cn.sinozg.applet.biz.com.model.DevicePropertyMappingCache;
 import cn.sinozg.applet.biz.com.model.TmMessageInfo;
 import cn.sinozg.applet.biz.com.vo.response.TmProtocolResponse;
 import cn.sinozg.applet.biz.common.cache.DeviceCache;
-import cn.sinozg.applet.biz.common.menus.WebSocketType;
+import cn.sinozg.applet.biz.common.enums.WebSocketType;
 import cn.sinozg.applet.biz.device.service.DeviceInfoService;
 import cn.sinozg.applet.biz.device.vo.request.DeviceInfoProtocolRequest;
 import cn.sinozg.applet.biz.product.entity.ProdInfo;

@@ -1,4 +1,4 @@
-package cn.sinozg.applet.biz.common.menus;
+package cn.sinozg.applet.biz.common.enums;
 
 import cn.sinozg.applet.ws.joint.WsBaseEnum;
 import lombok.Getter;
