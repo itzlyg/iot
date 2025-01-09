@@ -15,6 +15,7 @@ import cn.sinozg.applet.biz.notify.model.proto.CollectMetricsParams;
 import cn.sinozg.applet.biz.notify.model.proto.CollectRowsParams;
 import cn.sinozg.applet.biz.notify.util.AlerterUtil;
 import cn.sinozg.applet.biz.notify.util.CollectUtil;
+import cn.sinozg.applet.common.constant.Constants;
 import cn.sinozg.applet.common.utils.PojoUtil;
 import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
@@ -172,7 +173,6 @@ public class MetricsCollect implements Runnable, Comparable<MetricsCollect> {
         }
 
         AlerterUtil.setList(collectData, fieldList, CollectMetricsParams::getFields, CollectMetricsParams::setFields);
-
         List<CollectRowsParams> aliasRowList = collectData.getValue();
         if (aliasRowList == null || aliasRowList.isEmpty()) {
             return;
@@ -357,8 +357,8 @@ public class MetricsCollect implements Runnable, Comparable<MetricsCollect> {
     }
 
     private void setNewThreadName(String monitorId, String app, long startTime, MetricsInfo metrics) {
-        String builder = monitorId + "-" + app + "-" + metrics.getName() +
-                "-" + String.valueOf(startTime).substring(9);
+        String builder = monitorId + Constants.MIDDLE_LINE + app + Constants.MIDDLE_LINE + metrics.getName() +
+                Constants.MIDDLE_LINE + String.valueOf(startTime).substring(9);
         Thread.currentThread().setName(builder);
     }
 

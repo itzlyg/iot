@@ -18,6 +18,7 @@ import cn.sinozg.applet.biz.notify.timer.MetricsCollect;
 import cn.sinozg.applet.biz.notify.timer.WheelTimerTask;
 import cn.sinozg.applet.biz.notify.util.AlerterThread;
 import cn.sinozg.applet.biz.notify.util.CollectUtil;
+import cn.sinozg.applet.common.constant.Constants;
 import cn.sinozg.applet.common.utils.JsonUtil;
 import io.netty.util.Timeout;
 import lombok.extern.slf4j.Slf4j;
@@ -173,7 +174,7 @@ public class CommonDispatcher implements MetricsTaskDispatch, CollectDataDispatc
             MetricsCollect metricsCollect = new MetricsCollect(metrics, timeout, this, collectorIdentity, unitConvertList);
             metricsCollectorQueue.addJob(metricsCollect);
             MetricsTime time = toMetricsTime(timeout, metrics);
-            metricsTimeoutMonitorMap.put(job.getId() + "-" + metrics.getName(), time);
+            metricsTimeoutMonitorMap.put(job.getId() + Constants.MIDDLE_LINE + metrics.getName(), time);
         });
     }
 
@@ -182,7 +183,7 @@ public class CommonDispatcher implements MetricsTaskDispatch, CollectDataDispatc
         WheelTimerTask timerJob = (WheelTimerTask) timeout.task();
         TimerJobInfo job = timerJob.getJob();
         if (metrics.isHasSubTask()) {
-            metricsTimeoutMonitorMap.remove(job.getId() + "-" + metrics.getName() + "-sub-" + metrics.getSubTaskId());
+            metricsTimeoutMonitorMap.remove(job.getId() + Constants.MIDDLE_LINE + metrics.getName() + "-sub-" + metrics.getSubTaskId());
             boolean isLastTask = metrics.consumeSubTaskResponse(metricsData);
             if (isLastTask) {
                 metricsData = metrics.getSubTaskDataRef().get();
@@ -190,7 +191,7 @@ public class CommonDispatcher implements MetricsTaskDispatch, CollectDataDispatc
                 return;
             }
         } else {
-            metricsTimeoutMonitorMap.remove(job.getId() + "-" + metrics.getName());
+            metricsTimeoutMonitorMap.remove(job.getId() + Constants.MIDDLE_LINE + metrics.getName());
         }
         Set<MetricsInfo> metricsSet = job.getNextCollectMetrics(metrics, false);
         if (job.isCyclic()) {
@@ -255,7 +256,7 @@ public class CommonDispatcher implements MetricsTaskDispatch, CollectDataDispatc
                         MetricsCollect metricsCollect = new MetricsCollect(metric, timeout, this, collectorIdentity, unitConvertList);
                         metricsCollectorQueue.addJob(metricsCollect);
                         MetricsTime time = toMetricsTime(timeout, metrics);
-                        metricsTimeoutMonitorMap.put(job.getId() + "-" + metric.getName() + "-sub-" + index, time);
+                        metricsTimeoutMonitorMap.put(job.getId() + Constants.MIDDLE_LINE + metric.getName() + "-sub-" + index, time);
                     }
 
                 }
@@ -290,7 +291,7 @@ public class CommonDispatcher implements MetricsTaskDispatch, CollectDataDispatc
                     MetricsCollect metricsCollect = new MetricsCollect(metricItem, timeout, this, collectorIdentity, unitConvertList);
                     metricsCollectorQueue.addJob(metricsCollect);
                     MetricsTime time = toMetricsTime(timeout, metrics);
-                    metricsTimeoutMonitorMap.put(job.getId() + "-" + metricItem.getName(), time);
+                    metricsTimeoutMonitorMap.put(job.getId() + Constants.MIDDLE_LINE + metricItem.getName(), time);
                 });
             } else {
                 // The list of metrics task at the current execution level has not been fully executed.

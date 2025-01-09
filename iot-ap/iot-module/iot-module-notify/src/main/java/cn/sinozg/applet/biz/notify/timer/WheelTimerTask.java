@@ -11,6 +11,7 @@ import cn.sinozg.applet.common.utils.PojoUtil;
 import cn.sinozg.applet.common.utils.SpringUtil;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.Map;
 @Slf4j
 public class WheelTimerTask implements TimerTask {
 
+    @Getter
     private final TimerJobInfo job;
     private final MetricsTaskDispatch metricsTaskDispatch;
     public WheelTimerTask(TimerJobInfo job) {
@@ -70,9 +72,5 @@ public class WheelTimerTask implements TimerTask {
     public void run(Timeout timeout) throws Exception {
         job.setDispatchTime(System.currentTimeMillis());
         metricsTaskDispatch.dispatchMetricsTask(timeout);
-    }
-
-    public TimerJobInfo getJob() {
-        return job;
     }
 }

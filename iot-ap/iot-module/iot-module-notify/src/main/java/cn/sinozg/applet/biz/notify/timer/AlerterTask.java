@@ -10,6 +10,7 @@ import cn.sinozg.applet.biz.notify.service.AlerterDataService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * @author xieyubin
@@ -51,7 +52,7 @@ public class AlerterTask implements Runnable {
     private void sendNotify(NotifierAlerterInfo alert) {
         List<NotifierRuleInfo> rules = alerterDataService.matchRulesByAlerter(alert);
         // todo Send notification here temporarily single thread     发送通知这里暂时单线程
-        if (rules != null) {
+        if (CollectionUtils.isNotEmpty(rules)) {
             for (NotifierRuleInfo rule : rules) {
                 try {
                     NotifierConfigBaseInfo baseInfo = alerterDataService.configById(rule.getConfigId());

@@ -46,7 +46,7 @@ public class WebHookNotifierAlerterHandleImpl extends BaseNotifierAlerterHandle<
         if (MapUtils.isEmpty(tags)) {
             return;
         }
-        Iterator<Map.Entry<String, String>> iterator = alert.getTags().entrySet().iterator();
+        Iterator<Map.Entry<String, String>> iterator = tags.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, String> entry = iterator.next();
             if (StringUtils.isNoneBlank(entry.getKey(), entry.getValue())) {

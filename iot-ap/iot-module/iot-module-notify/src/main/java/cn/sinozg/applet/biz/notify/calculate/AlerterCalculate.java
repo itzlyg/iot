@@ -24,6 +24,7 @@ import com.googlecode.aviator.exception.ExpressionRuntimeException;
 import com.googlecode.aviator.exception.ExpressionSyntaxErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -187,7 +188,7 @@ public class AlerterCalculate {
                         }
 
                         if (field.isLabel()) {
-                            tagBuilder.append("-").append(valueStr);
+                            tagBuilder.append(Constants.MIDDLE_LINE).append(valueStr);
                         }
                     }
                     try {
@@ -256,7 +257,7 @@ public class AlerterCalculate {
                 preAlert.setTriggerTimes(times);
                 preAlert.setFirstAlerterTime(ldt);
                 preAlert.setAlerterTime(ldt);
-                int defineTimes = avaAlertDefine.getTimes() == null ? 1 : avaAlertDefine.getTimes();
+                int defineTimes = ObjectUtils.defaultIfNull(avaAlertDefine.getTimes(), 1);
                 if (times >= defineTimes) {
                     preAlert.setDataStatus(Constants.STATUS_00);
                     NotifierAlerterInfo clonePre = AlerterUtil.clone(preAlert);
@@ -326,7 +327,7 @@ public class AlerterCalculate {
             triggeredAlerter.setAlerterTimes(times);
             triggeredAlerter.setFirstAlerterTime(ldt);
             triggeredAlerter.setAlerterTime(ldt);
-            int defineTimes = define.getTimes() == null ? 1 : define.getTimes();
+            int defineTimes = ObjectUtils.defaultIfNull(define.getTimes(), 1);
             if (times >= defineTimes) {
                 triggeredAlerter.setDataStatus(Constants.STATUS_00);
                 triggeredAlerterMap.remove(alarmKey);
@@ -349,7 +350,7 @@ public class AlerterCalculate {
             }
             NotifierAlerterInfo alert = builderAlerter(app + Constants.SPOT + metrics + Constants.SPOT + define.getField(), define.getPriority(), Constants.STATUS_01, AlerterUtil.render(define.getTemplate(), fieldValueMap),
                     ldt, 1, tags);
-            int defineTimes = define.getTimes() == null ? 1 : define.getTimes();
+            int defineTimes = ObjectUtils.defaultIfNull(define.getTimes(), 1);
             if (1 >= defineTimes) {
                 alert.setDataStatus(Constants.STATUS_00);
                 notRecoveredAlerterMap.put(alarmKey, alert);
